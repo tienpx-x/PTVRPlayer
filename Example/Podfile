@@ -1,0 +1,15 @@
+use_frameworks!
+
+target 'PTVRPlayer_Example' do
+  pod 'PTVRPlayer', :path => '../'
+  pod 'RxSwift'
+  pod 'RxCocoa'
+  pod 'Reusable'
+  pod 'Then'
+  pod 'NSObject+Rx'
+  pod 'SnapKit'
+  
+  target 'PTVRPlayer_Tests' do
+    inherit! :search_paths
+  end
+end

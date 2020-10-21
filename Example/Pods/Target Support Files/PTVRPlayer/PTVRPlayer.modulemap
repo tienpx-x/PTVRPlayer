@@ -1,0 +1,6 @@
+framework module PTVRPlayer {
+  umbrella header "PTVRPlayer-umbrella.h"
+
+  export *
+  module * { export * }
+}

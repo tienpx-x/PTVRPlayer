@@ -1,0 +1,30 @@
+{
+  "name": "PTVRPlayer",
+  "version": "1.0.0",
+  "summary": "PTVRPlayer allows you to build immersive cross-platform VR experiences for iOS",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/tienpx-x/PTVRPlayer",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "tienpx-xxx": "tienpx.xxx@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/tienpx-x/PTVRPlayer.git",
+    "tag": "1.0.0"
+  },
+  "platforms": {
+    "ios": "10.0"
+  },
+  "source_files": "PTVRPlayer/Classes/**/*",
+  "dependencies": {
+    "Device": [
+      "~> 3.2.1"
+    ],
+    "Then": [
+
+    ]
+  }
+}

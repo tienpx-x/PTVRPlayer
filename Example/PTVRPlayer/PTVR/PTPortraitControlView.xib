@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PTPortraitControlView" customModule="PTVRPlayer_Example" customModuleProvider="target">
+            <connections>
+                <outlet property="closeButton" destination="wTN-uc-1jh" id="YOc-No-tmp"/>
+                <outlet property="containerView" destination="0u2-Ca-QtO" id="s8D-Kx-gaR"/>
+                <outlet property="leftTimeLabel" destination="nrL-yA-deM" id="Lwv-t3-fSm"/>
+                <outlet property="playPauseButton" destination="dLp-KD-fGA" id="uBs-wr-Y4I"/>
+                <outlet property="rightTimeLabel" destination="IMk-9b-udh" id="bKL-Y6-er8"/>
+                <outlet property="seekSlider" destination="9kY-nU-zph" id="shf-2m-GCa"/>
+                <outlet property="vrButton" destination="HM5-Id-tHF" id="7mv-fP-7J6"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="ese-9H-uas">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0u2-Ca-QtO">
+                    <rect key="frame" x="20.5" y="751" width="373" height="87"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLp-KD-fGA">
+                            <rect key="frame" x="175" y="51.5" width="23" height="28"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="28" id="MVF-jL-7Uh"/>
+                                <constraint firstAttribute="width" secondItem="dLp-KD-fGA" secondAttribute="height" multiplier="9:11" id="rXq-xI-v5y"/>
+                            </constraints>
+                            <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                            <state key="normal" image="ic_play"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HM5-Id-tHF">
+                            <rect key="frame" x="331" y="44.5" width="40" height="42"/>
+                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                            <state key="normal" image="vr_mode"/>
+                        </button>
+                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="9kY-nU-zph">
+                            <rect key="frame" x="10" y="2.5" width="353" height="31"/>
+                        </slider>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IMk-9b-udh" customClass="TimeLabel" customModule="PTVRPlayer_Example" customModuleProvider="target">
+                            <rect key="frame" x="327" y="37.5" width="34" height="15"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" red="0.7803921568627451" green="0.792156862745098" blue="0.81960784313725488" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nrL-yA-deM" customClass="TimeLabel" customModule="PTVRPlayer_Example" customModuleProvider="target">
+                            <rect key="frame" x="12" y="37.5" width="34" height="15"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" red="0.78039215689999997" green="0.79215686269999996" blue="0.81960784310000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.1803921568627451" green="0.19215686274509802" blue="0.2196078431372549" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="9kY-nU-zph" firstAttribute="centerY" secondItem="0u2-Ca-QtO" secondAttribute="centerY" multiplier="0.4" id="6fI-Am-JLD"/>
+                        <constraint firstItem="dLp-KD-fGA" firstAttribute="centerX" secondItem="0u2-Ca-QtO" secondAttribute="centerX" id="6pF-4V-WrY"/>
+                        <constraint firstItem="nrL-yA-deM" firstAttribute="top" secondItem="9kY-nU-zph" secondAttribute="bottom" constant="5" id="AQy-VZ-xx2"/>
+                        <constraint firstItem="IMk-9b-udh" firstAttribute="trailing" secondItem="9kY-nU-zph" secondAttribute="trailing" id="Dpy-ip-s2u"/>
+                        <constraint firstAttribute="width" secondItem="0u2-Ca-QtO" secondAttribute="height" multiplier="343:80" id="U35-la-Vm4"/>
+                        <constraint firstAttribute="trailing" secondItem="9kY-nU-zph" secondAttribute="trailing" constant="12" id="W9b-3q-JUU"/>
+                        <constraint firstItem="nrL-yA-deM" firstAttribute="leading" secondItem="9kY-nU-zph" secondAttribute="leading" id="eE3-G5-o9b"/>
+                        <constraint firstItem="dLp-KD-fGA" firstAttribute="centerY" secondItem="0u2-Ca-QtO" secondAttribute="centerY" multiplier="1.5" id="ffF-if-uZZ"/>
+                        <constraint firstItem="9kY-nU-zph" firstAttribute="leading" secondItem="0u2-Ca-QtO" secondAttribute="leading" constant="12" id="gD7-ML-4hs"/>
+                        <constraint firstItem="HM5-Id-tHF" firstAttribute="trailing" secondItem="IMk-9b-udh" secondAttribute="trailing" constant="10" id="hfy-d6-u3m"/>
+                        <constraint firstItem="9kY-nU-zph" firstAttribute="centerX" secondItem="0u2-Ca-QtO" secondAttribute="centerX" id="msZ-gM-CRx"/>
+                        <constraint firstItem="IMk-9b-udh" firstAttribute="top" secondItem="9kY-nU-zph" secondAttribute="bottom" constant="5" id="pT3-fB-CKM"/>
+                        <constraint firstItem="HM5-Id-tHF" firstAttribute="centerY" secondItem="dLp-KD-fGA" secondAttribute="centerY" id="tIJ-hO-OMz"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wTN-uc-1jh">
+                    <rect key="frame" x="3" y="17" width="56" height="56"/>
+                    <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                    <state key="normal" image="ic_close"/>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="0u2-Ca-QtO" firstAttribute="width" secondItem="ese-9H-uas" secondAttribute="width" multiplier="0.9" id="4oT-od-Nhp"/>
+                <constraint firstItem="wTN-uc-1jh" firstAttribute="centerY" secondItem="ese-9H-uas" secondAttribute="centerY" multiplier="0.1" id="Cc0-ao-ziP"/>
+                <constraint firstItem="P62-4y-ayi" firstAttribute="bottom" secondItem="0u2-Ca-QtO" secondAttribute="bottom" constant="24" id="KOk-b8-xd5"/>
+                <constraint firstItem="wTN-uc-1jh" firstAttribute="centerX" secondItem="ese-9H-uas" secondAttribute="centerX" multiplier="0.15" id="cMC-b4-Zi1"/>
+                <constraint firstItem="0u2-Ca-QtO" firstAttribute="centerX" secondItem="ese-9H-uas" secondAttribute="centerX" id="r9q-Ei-w8n"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="P62-4y-ayi"/>
+            <point key="canvasLocation" x="-81.159420289855078" y="81.026785714285708"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_close" width="36" height="36"/>
+        <image name="ic_play" width="384" height="384"/>
+        <image name="vr_mode" width="20" height="20"/>
+    </resources>
+</document>

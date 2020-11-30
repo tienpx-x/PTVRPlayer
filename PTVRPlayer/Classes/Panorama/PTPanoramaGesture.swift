@@ -8,16 +8,16 @@
 import UIKit
 import SceneKit
 
-final class PTPanoramaPanGestureManager {
-    let rotationNode: SCNNode
+public class PTPanoramaPanGestureManager {
+    public let rotationNode: SCNNode
 
-    var allowsVerticalRotation = true
-    var minimumVerticalRotationAngle: Float?
-    var maximumVerticalRotationAngle: Float?
+    public var allowsVerticalRotation = true
+    public var minimumVerticalRotationAngle: Float?
+    public var maximumVerticalRotationAngle: Float?
 
-    var allowsHorizontalRotation = true
-    var minimumHorizontalRotationAngle: Float?
-    var maximumHorizontalRotationAngle: Float?
+    public var allowsHorizontalRotation = true
+    public var minimumHorizontalRotationAngle: Float?
+    public var maximumHorizontalRotationAngle: Float?
 
     lazy var gestureRecognizer: UIPanGestureRecognizer = {
         let recognizer = AdvancedPanGestureRecognizer()

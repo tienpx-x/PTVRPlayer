@@ -22,33 +22,12 @@ public final class PT180SBSMediaNode: SCNNode {
         name = "180 Object"
         _ = SCNSphere(radius: radius).then {
             $0.segmentCount = segmentCount
-//            $0.firstMaterial?.cullMode = .front
-            $0.firstMaterial?.isDoubleSided = true
+            $0.firstMaterial?.cullMode = .front
             geometry = $0
         }
         scale = SCNVector3(x: 1, y: 1, z: -1)
         eulerAngles.y = deg2rad(-90)
         renderingOrder = .max
-        
-        // TODO: Blur Effect
-//        if let image = UIImage(named: "blur", in: Bundle(for: type(of: self)), compatibleWith: nil) {
-//            let sphere = SCNSphere(radius: 9.9).then {
-//                $0.segmentCount = segmentCount
-//                $0.firstMaterial?.cullMode = .front
-//                $0.firstMaterial?.diffuse.contents = image
-//            }
-//            let overlayNode = SCNNode(geometry: sphere)
-//            overlayNode.scale = SCNVector3(x: 1, y: 1, z: -1)
-//            addChildNode(overlayNode)
-//        }
-        
-        let ball = SCNPlane(width: 5, height: 3)
-        ball.firstMaterial?.diffuse.contents = UIColor.red
-        let ballNode = SCNNode(geometry: ball)
-        ballNode.eulerAngles.y = deg2rad(90)
-        ballNode.eulerAngles.z = deg2rad(80)
-        ballNode.position = SCNVector3Make(-2, -9, 0)
-        addChildNode(ballNode)
     }
     
     public required init?(coder aDecoder: NSCoder) {

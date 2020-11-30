@@ -8,11 +8,11 @@
 import SceneKit
 import CoreMotion
 
-public final class PTOrientationNode: SCNNode {
-    var maximumVerticalRotationAngle: Float?
-    var maximumHorizontalRotationAngle: Float?
-    var allowsUserRotation = true
-    var initialAttitude: CMAttitude?
+public class PTOrientationNode: SCNNode {
+    public var maximumVerticalRotationAngle: Float?
+    public var maximumHorizontalRotationAngle: Float?
+    public var allowsUserRotation = false
+    public var initialAttitude: CMAttitude?
     
     let userRotationNode = SCNNode()
     let referenceRotationNode = SCNNode()
@@ -50,7 +50,7 @@ public final class PTOrientationNode: SCNNode {
         camera.zNear = 0.3
         pointOfView.camera = camera
         
-        self.updateCamera()
+        updateCamera()
     }
     
     public required init?(coder aDecoder: NSCoder) {

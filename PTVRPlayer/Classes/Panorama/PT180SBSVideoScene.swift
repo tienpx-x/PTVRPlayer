@@ -9,20 +9,27 @@ import SceneKit
 import Metal
 import AVFoundation
 
-protocol PTVideoSceneDelegate: NSObject {
-    func render(_ scene: SCNScene, atTime time: TimeInterval, forEye eye: Eye)
+public protocol PTVideoSceneDelegate: NSObject {
+    func render(atHostTime time: TimeInterval, commandBuffer: MTLCommandBuffer)
 }
 
 public class PT180SBSVideoScene: SCNScene {
     // SceneKit
-    public lazy var mediaNode: PT180SBSMediaNode = {
+    public lazy var leftMediaNode: PT180SBSMediaNode = {
         return PT180SBSMediaNode().then {
             rootNode.addChildNode($0)
         }
     }()
     
+    public lazy var rightMediaNode: PT180SBSMediaNode = {
+        return PT180SBSMediaNode().then {
+            rootNode.addChildNode($0)
+            $0.position = SCNVector3Make(0, -20, 0)
+        }
+    }()
+    
     // Delegate
-    weak var delegate: PTVideoSceneDelegate?
+    public weak var delegate: PTVideoSceneDelegate?
     
     // Render
     public var player: AVPlayer? {
@@ -61,9 +68,15 @@ public class PT180SBSVideoScene: SCNScene {
     }()
     
     
-    private var playerTexture: MTLTexture? {
+    private var leftPlayerTexture: MTLTexture? {
         didSet {
-            mediaNode.mediaContents = playerTexture
+            leftMediaNode.mediaContents = leftPlayerTexture
+        }
+    }
+    
+    private var rightPlayerTexture: MTLTexture? {
+        didSet {
+            rightMediaNode.mediaContents = rightPlayerTexture
         }
     }
     
@@ -89,15 +102,17 @@ public class PT180SBSVideoScene: SCNScene {
     
     public let device: MTLDevice
     public let eye: Eye
-    public let orientationNode: PTOrientationNode
+    public let leftOrientationNode: PTOrientationNode
+    public let rightOrientationNode: PTOrientationNode
     
-    public init(device: MTLDevice, eye: Eye = .left, orientationNode: PTOrientationNode) {
+    public init(device: MTLDevice, eye: Eye = .left, leftOrientationNode: PTOrientationNode, rightOrientationNode: PTOrientationNode) {
         guard let commandQueue = device.makeCommandQueue() else {
             fatalError("Must have a command queue")
         }
         self.device = device
         self.commandQueue = commandQueue
-        self.orientationNode = orientationNode
+        self.leftOrientationNode = leftOrientationNode
+        self.rightOrientationNode = rightOrientationNode
         self.eye = eye
         super.init()
         renderLoop.resume()
@@ -114,24 +129,26 @@ extension PT180SBSVideoScene {
         guard let videoSize = playerItem?.presentationSize, videoSize != .zero else { return }
         let width = Int(videoSize.width)
         let height = Int(videoSize.height)
-        if let texture = playerTexture, texture.width == width, texture.height == height { return }
+        if let leftTexture = leftPlayerTexture,
+            let rightTexture = rightPlayerTexture,
+            leftTexture.width == width,
+            leftTexture.height == height,
+            rightTexture.width == width,
+            rightTexture.height == height { return }
         let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm_srgb, width: width, height: height, mipmapped: true)
-        playerTexture = device.makeTexture(descriptor: descriptor)
+        leftPlayerTexture = device.makeTexture(descriptor: descriptor)
+        rightPlayerTexture = device.makeTexture(descriptor: descriptor)
     }
     
     public func renderVideo(atTime time: TimeInterval, commandQueue: MTLCommandQueue? = nil) {
         guard hasNewPixelBuffer(atHostTime: time) else { return }
         updateTextureIfNeeded()
-        guard let texture = playerTexture else { return }
-        do {
-            guard let commandBuffer = (commandQueue ?? self.commandQueue).makeCommandBuffer() else {
-                fatalError("Can't render without a command buffer")
-            }
-            try render(atHostTime: time, to: texture, commandBuffer: commandBuffer)
-            commandBuffer.commit()
-        } catch {
-            fatalError(error.localizedDescription)
+        guard let _ = leftPlayerTexture, let _ = rightPlayerTexture else { return }
+        guard let commandBuffer = (commandQueue ?? self.commandQueue).makeCommandBuffer() else {
+            fatalError("Can't render without a command buffer")
         }
+        try? render(atHostTime: time, commandBuffer: commandBuffer)
+        commandBuffer.commit()
     }
 }
 
@@ -158,7 +175,7 @@ extension PT180SBSVideoScene {
     public func updateOrientation(_ time: TimeInterval) {
         var disableActions = false
         
-        if let provider = orientationNode.deviceOrientationProvider, provider.shouldWaitDeviceOrientation(atTime: time) {
+        if let provider = leftOrientationNode.deviceOrientationProvider, provider.shouldWaitDeviceOrientation(atTime: time) {
             provider.waitDeviceOrientation(atTime: time)
             disableActions = true
         }
@@ -168,20 +185,22 @@ extension PT180SBSVideoScene {
         SCNTransaction.animationDuration = 1 / 15
         SCNTransaction.disableActions = disableActions
         
-        orientationNode.updateDeviceOrientation(atTime: time)
+        leftOrientationNode.updateDeviceOrientation(atTime: time)
+        rightOrientationNode.updateDeviceOrientation(atTime: time)
         
         SCNTransaction.commit()
         SCNTransaction.unlock()
     }
     
-    public func render(atItemTime time: CMTime, to texture: MTLTexture, commandBuffer: MTLCommandBuffer) throws {
+    public func render(atItemTime time: CMTime, commandBuffer: MTLCommandBuffer) throws {
+        guard let leftTexture = leftPlayerTexture, let rightTexture = rightPlayerTexture else { return }
         guard let pixelBuffer = videoOutput.copyPixelBuffer(forItemTime: time, itemTimeForDisplay: nil) else {
             return
         }
         CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
         defer { CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly) }
         var cacheOutput: CVMetalTexture?
-        CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, textureCache, pixelBuffer, nil, texture.pixelFormat, texture.width, texture.height, 0, &cacheOutput)
+        CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, textureCache, pixelBuffer, nil, leftTexture.pixelFormat, leftTexture.width, leftTexture.height, 0, &cacheOutput)
         
         guard let cvMetalTexture = cacheOutput else {
             fatalError("cvMetalTexture")
@@ -191,20 +210,12 @@ extension PT180SBSVideoScene {
             fatalError("Failed to get MTLTexture from CVMetalTexture")
         }
         
-        let sourceOrigin: MTLOrigin
-        let sourceSize: MTLSize
-        let destinationOrigin: MTLOrigin
-        
-        switch eye {
-        case .left:
-            sourceOrigin = MTLOriginMake(0, 0, 0)
-            sourceSize = MTLSizeMake(sourceTexture.width / 2, sourceTexture.height, sourceTexture.depth)
-            destinationOrigin = MTLOriginMake(0, 0, 0)
-        case .right:
-            sourceOrigin = MTLOriginMake(sourceTexture.width / 2, 0, 0)
-            sourceSize = MTLSizeMake(sourceTexture.width / 2, sourceTexture.height, sourceTexture.depth)
-            destinationOrigin = MTLOriginMake(0, 0, 0)
-        }
+        let lSourceOrigin = MTLOriginMake(0, 0, 0)
+        let lSourceSize = MTLSizeMake(sourceTexture.width / 2, sourceTexture.height, sourceTexture.depth)
+        let lDestinationOrigin = MTLOriginMake(0, 0, 0)
+        let rSourceOrigin = MTLOriginMake(sourceTexture.width / 2, 0, 0)
+        let rSourceSize = MTLSizeMake(sourceTexture.width / 2, sourceTexture.height, sourceTexture.depth)
+        let rDestinationOrigin = MTLOriginMake(0, 0, 0)
         
         guard let blitCommandEncoder = commandBuffer.makeBlitCommandEncoder() else {
             fatalError("blitCommandEncoder")
@@ -213,13 +224,23 @@ extension PT180SBSVideoScene {
         blitCommandEncoder.copy(from: sourceTexture,
                                 sourceSlice: 0,
                                 sourceLevel: 0,
-                                sourceOrigin: sourceOrigin,
-                                sourceSize: sourceSize,
-                                to: texture,
+                                sourceOrigin: lSourceOrigin,
+                                sourceSize: lSourceSize,
+                                to: leftTexture,
                                 destinationSlice: 0,
                                 destinationLevel: 0,
-                                destinationOrigin: destinationOrigin)
+                                destinationOrigin: lDestinationOrigin)
+        blitCommandEncoder.copy(from: sourceTexture,
+                                sourceSlice: 0,
+                                sourceLevel: 0,
+                                sourceOrigin: rSourceOrigin,
+                                sourceSize: rSourceSize,
+                                to: rightTexture,
+                                destinationSlice: 0,
+                                destinationLevel: 0,
+                                destinationOrigin: rDestinationOrigin)
         blitCommandEncoder.endEncoding()
+        
     }
     
     public func hasNewPixelBuffer(atHostTime time: TimeInterval) -> Bool {
@@ -227,11 +248,11 @@ extension PT180SBSVideoScene {
         return hasNewPixelBuffer(atItemTime: itemTime)
     }
     
-    public func render(atHostTime time: TimeInterval, to texture: MTLTexture, commandBuffer: MTLCommandBuffer) throws {
+    public func render(atHostTime time: TimeInterval, commandBuffer: MTLCommandBuffer) throws {
         let itemTime = videoOutput.itemTime(forHostTime: time)
         updateOrientation(time)
-        try? render(atItemTime: itemTime, to: texture, commandBuffer: commandBuffer)
-        delegate?.render(self, atTime: time, forEye: eye)
+        try? render(atItemTime: itemTime, commandBuffer: commandBuffer)
+//        delegate?.render(atHostTime: time, commandBuffer: commandBuffer)
     }
 }
 

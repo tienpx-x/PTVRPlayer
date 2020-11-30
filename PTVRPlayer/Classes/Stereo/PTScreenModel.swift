@@ -18,8 +18,10 @@ public class PTScreenModel: ScreenParametersProtocol {
             return ScreenParameters(width: 0.104, height: 0.058, border: 0.005)
         case .iPhone6Plus:
             return ScreenParameters(width: 0.112, height: 0.064, border: 0.005)
+        case .iPhoneX,.iPhoneXS:
+            return ScreenParameters(width: 0.120, height: 0.06, border: 0.005)
         case .iPhoneXS_Max,.iPhone11Pro_Max:
-            return ScreenParameters(width: 0.112, height: 0.06, border: 0.005)
+            return ScreenParameters(width: 0.122, height: 0.06, border: 0.005)
         default:
             return ScreenParameters(width: 0.112, height: 0.064, border: 0.005)
         }

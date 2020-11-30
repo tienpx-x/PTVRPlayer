@@ -16,7 +16,7 @@ extension PTViewerModel: ViewerParametersProtocol {
         case .googleCardboard:
             return ViewerParameters(
                 lenses: Lenses(separation: 0.062, offset: 0.035, alignment: .bottom, screenDistance: 0.037),
-                distortion: Distortion(k1: 0.26, k2: 0.27),
+                distortion: Distortion(k1: 0.26, k2: 0.26),
                 maximumFieldOfView: FieldOfView(outer: 50.0, inner: 50.0, upper: 50.0, lower: 50.0)
             )
         case .custom(let parameters):

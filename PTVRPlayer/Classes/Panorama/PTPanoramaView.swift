@@ -30,8 +30,10 @@ public final class PTPanoramaView: UIView {
             return scnView.scene as? PT180SBSVideoScene
         }
         set(value) {
-            orientationNode.removeFromParentNode()
-            value?.rootNode.addChildNode(orientationNode)
+            leftOrientationNode.removeFromParentNode()
+            rightOrientationNode.removeFromParentNode()
+            value?.rootNode.addChildNode(leftOrientationNode)
+            value?.rootNode.addChildNode(rightOrientationNode)
             scnView.scene = value
         }
     }
@@ -43,7 +45,7 @@ public final class PTPanoramaView: UIView {
         ]).then {
             $0.backgroundColor = .black
             $0.isUserInteractionEnabled = false
-            $0.pointOfView = orientationNode.pointOfView
+            $0.pointOfView = leftOrientationNode.pointOfView
             $0.isPlaying = true
             insertSubview($0, at: 0)
         }
@@ -51,18 +53,31 @@ public final class PTPanoramaView: UIView {
     
     // Gesture
     
-    public lazy var orientationNode: PTOrientationNode = {
+    public lazy var leftOrientationNode: PTOrientationNode = {
         let node = PTOrientationNode()
         node.fieldOfView = 120
+        node.allowsUserRotation = true
+        node.pointOfView.camera?.categoryBitMask = CategoryBitMask.all.subtracting(.rightEye).rawValue
         let lockDegree = Float(45)
         node.maximumVerticalRotationAngle = deg2rad(lockDegree)
         node.maximumHorizontalRotationAngle = deg2rad(lockDegree)
         return node
     }()
     
+    public lazy var rightOrientationNode: PTOrientationNode = {
+        let node = PTOrientationNode()
+        node.fieldOfView = 120
+        node.allowsUserRotation = true
+        node.pointOfView.camera?.categoryBitMask = CategoryBitMask.all.subtracting(.leftEye).rawValue
+        let lockDegree = Float(45)
+        node.maximumVerticalRotationAngle = deg2rad(lockDegree)
+        node.maximumHorizontalRotationAngle = deg2rad(lockDegree)
+        node.position = SCNVector3Make(0, -20, 0)
+        return node
+    }()
     
-    lazy var panGestureManager: PTPanoramaPanGestureManager = {
-        let manager = PTPanoramaPanGestureManager(rotationNode: orientationNode.userRotationNode)
+    public lazy var panGestureManager: PTPanoramaPanGestureManager = {
+        let manager = PTPanoramaPanGestureManager(rotationNode: leftOrientationNode.userRotationNode)
         let lockDegree = Float(45)
         manager.minimumVerticalRotationAngle = -deg2rad(lockDegree)
         manager.maximumVerticalRotationAngle = deg2rad(lockDegree)
@@ -96,7 +111,9 @@ extension PTPanoramaView {
     public func load(player: AVPlayer, format: PTMediaFormat) {
         switch format {
         case .stereoSBS:
-            let scene = PT180SBSVideoScene(device: device, orientationNode: orientationNode)
+            let scene = PT180SBSVideoScene(device: device,
+                                           leftOrientationNode: leftOrientationNode,
+                                           rightOrientationNode: rightOrientationNode)
             scene.player = player
             self.scene = scene
         }
@@ -125,7 +142,7 @@ extension PTPanoramaView {
     
     @objc public func setNeedsResetRotation(animated: Bool = false) {
         panGestureManager.stopAnimations()
-        orientationNode.setNeedsResetRotation(animated: animated)
+        leftOrientationNode.setNeedsResetRotation(animated: animated)
     }
 }
 

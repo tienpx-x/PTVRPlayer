@@ -46,20 +46,20 @@ public final class PTStereoCameraNode: SCNNode {
     }
 
     private func updatePointOfViews() {
-        let separation = stereoParameters.viewer.lenses.separation
-
-        for (eye, node) in pointOfViews {
-            var position = SCNVector3Zero
-
-            switch eye {
-            case .left:
-                position.x = separation / -2
-            case .right:
-                position.x = separation / 2
-            }
-
-            node.position = position
-            node.camera?.projectionTransform = stereoParameters.cameraProjectionTransform(for: eye, nearZ: nearZ, farZ: farZ)
-        }
+//        let separation = stereoParameters.viewer.lenses.separation
+//
+//        for (eye, node) in pointOfViews {
+//            var position = SCNVector3Zero
+//
+//            switch eye {
+//            case .left:
+//                position.x = separation / -2
+//            case .right:
+//                position.x = separation / 2
+//            }
+//
+//            node.position = position
+//            node.camera?.projectionTransform = stereoParameters.cameraProjectionTransform(for: eye, nearZ: nearZ, farZ: farZ)
+//        }
     }
 }

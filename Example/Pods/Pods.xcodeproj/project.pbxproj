@@ -382,7 +382,6 @@
 		FF18F5E8256FF2A2001B4A54 /* DeviceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF18F5E7256FF2A2001B4A54 /* DeviceOrientation.swift */; };
 		FF18F5EA256FF2DB001B4A54 /* Rotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF18F5E9256FF2DB001B4A54 /* Rotation.swift */; };
 		FF18F5EC256FF38A001B4A54 /* InterfaceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF18F5EB256FF38A001B4A54 /* InterfaceOrientation.swift */; };
-		FF18F5F12570B88D001B4A54 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF18F5F02570B88D001B4A54 /* Assets.xcassets */; };
 		FF18F5F725734FBC001B4A54 /* PTStereoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF18F5F525734FB8001B4A54 /* PTStereoView.swift */; };
 		FF18F6052573633B001B4A54 /* PTStereoScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF18F6042573633B001B4A54 /* PTStereoScene.swift */; };
 		FF18F6072573639B001B4A54 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF18F6062573639B001B4A54 /* UIScreen+.swift */; };
@@ -948,7 +947,6 @@
 		FF18F5E7256FF2A2001B4A54 /* DeviceOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceOrientation.swift; sourceTree = "<group>"; };
 		FF18F5E9256FF2DB001B4A54 /* Rotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rotation.swift; sourceTree = "<group>"; };
 		FF18F5EB256FF38A001B4A54 /* InterfaceOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceOrientation.swift; sourceTree = "<group>"; };
-		FF18F5F02570B88D001B4A54 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FF18F5F525734FB8001B4A54 /* PTStereoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTStereoView.swift; sourceTree = "<group>"; };
 		FF18F6042573633B001B4A54 /* PTStereoScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTStereoScene.swift; sourceTree = "<group>"; };
 		FF18F6062573639B001B4A54 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
@@ -1739,7 +1737,6 @@
 				FF18F5F425734C70001B4A54 /* Stereo */,
 				FF18F5F325734C6B001B4A54 /* Common */,
 				FF18F5F225734C63001B4A54 /* Panorama */,
-				FF18F5F02570B88D001B4A54 /* Assets.xcassets */,
 			);
 			name = Classes;
 			path = PTVRPlayer/Classes;
@@ -2196,7 +2193,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF18F5F12570B88D001B4A54 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

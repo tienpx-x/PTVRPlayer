@@ -12,18 +12,34 @@ import AVFoundation
 public final class StereoView: UIView {
     // MARK: - Properties
     
-    public let player: AVPlayer
+    public var scene: SCNScene? {
+        didSet {
+            stereoScene.scene = scene
+        }
+    }
+    
+    public var leftOrientationNode: PTOrientationNode? {
+        didSet {
+            stereoScene.setPointOfView(leftOrientationNode?.pointOfView, for: .left)
+
+        }
+    }
+    public var rightOrientationNode: PTOrientationNode? {
+        didSet {
+            stereoScene.setPointOfView(rightOrientationNode?.pointOfView, for: .right)
+        }
+    }
+    
     public let stereoTexture: MTLTexture
     public let device: MTLDevice
     
     public var stereoParameters = StereoParameters(screen: PTScreenModel(),
                                                    viewer: PTViewerModel.googleCardboard)
     
-    lazy var stereoScene: PTStereoScene = {
+    public lazy var stereoScene: PTStereoScene = {
         let scene = PTStereoScene(device: device)
         scene.stereoTexture = stereoTexture
         scene.stereoParameters = stereoParameters
-        scene.player = player
         return scene
     }()
     
@@ -37,7 +53,7 @@ public final class StereoView: UIView {
             $0.backgroundColor = .black
             $0.isUserInteractionEnabled = false
             $0.isPlaying = true
-            insertSubview($0, at: 0)
+            addSubview($0)
         }
     }()
     
@@ -51,13 +67,11 @@ public final class StereoView: UIView {
     
     // MARK: - Life Cycle
     
-    public init(device: MTLDevice, player: AVPlayer) {
-        self.player = player
+    public init(device: MTLDevice) {
         self.device = device
-        // Init Tex
+        // Init Texture
         let nativeScreenSize = UIScreen.main.nativeLandscapeBounds.size
         let textureSize = nativeScreenSize
-        
         let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(
             pixelFormat: .bgra8Unorm_srgb,
             width: Int(textureSize.width),
@@ -68,9 +82,7 @@ public final class StereoView: UIView {
             fatalError("Can't continue without a view")
         }
         self.stereoTexture = texture
-        
         super.init(frame: UIScreen.main.landscapeBounds)
-        
         let sceneScale = textureSize.width / (bounds.width * UIScreen.main.scale)
         scnView.transform = CGAffineTransform(scaleX: sceneScale, y: sceneScale)
     }

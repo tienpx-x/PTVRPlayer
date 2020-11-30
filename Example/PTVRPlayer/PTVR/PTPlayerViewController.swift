@@ -29,7 +29,7 @@ final class PTPlayerViewController: UIViewController {
     var player: PTPlayer?
     var playerView: PTControlView?
     var playerBag = DisposeBag()
-//    var stereoView: StereoView?
+    var stereoView: StereoView?
     var timeObserver: Any?
     
 //    var isInVRMode: Bool {
@@ -174,31 +174,36 @@ extension PTPlayerViewController: PTPlayerControler {
     }
     
     func enterVRMode() {
-        guard let player = player else { return }
         // Force to landscape
         let value = UIInterfaceOrientation.landscapeRight.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
 
         let vc = UIViewController();
-        StereoView(device: panoramaView.device, player: player).do {
-//            $0.scene = panoramaView.scene
+        StereoView(device: panoramaView.device).do {
+            $0.scene = panoramaView.scene
             $0.frame = vc.view.frame
             vrControlView.frame = vc.view.frame
             vc.view.addSubview($0)
             vc.view.insertSubview(vrControlView, aboveSubview: $0)
 //            self.stereoView = $0
+            panoramaView.scene?.delegate = $0.stereoScene
+            panoramaView.setStereoMode()
+            $0.leftOrientationNode = panoramaView.leftOrientationNode
+            $0.rightOrientationNode = panoramaView.rightOrientationNode
+            panoramaView.isHidden = true
         }
-        panoramaView.stopRender()
         navigationController?.pushViewController(vc, animated: false)
     }
     
     func endVRMode() {
+        panoramaView.setPanoMode()
         // Force to portrait
-//        let value = UIInterfaceOrientation.portrait.rawValue
-//        UIDevice.current.setValue(value, forKey: "orientation")
-//
-//        navigationController?.popViewController(animated: false)
-//        stereoView?.removeFromSuperview()
+        let value = UIInterfaceOrientation.portrait.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
+
+        navigationController?.popViewController(animated: false)
+        stereoView?.removeFromSuperview()
+        panoramaView.isHidden = false
 //        self.stereoView = nil
     }
 }

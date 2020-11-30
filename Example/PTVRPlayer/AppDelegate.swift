@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = UIViewController()
         window?.makeKeyAndVisible()
 //        let url = URL(string: "https://www.w3schools.com/html/mov_bbb.mp4");
-        let url = Bundle.main.url(forResource: "2VRひとみ座_9月0日稽古風景2-2K", withExtension: "mp4")
+        let url = Bundle.main.url(forResource: "2VRひとみ座_9月0日稽古風景2-4K", withExtension: "mp4")
         let player = PTPlayer(url: url!)
         let vc = PTPlayerViewController.instantiate()
         vc.modalPresentationStyle = .fullScreen

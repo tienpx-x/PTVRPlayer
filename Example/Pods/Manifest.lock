@@ -1,9 +1,7 @@
 PODS:
-  - Device (3.2.1)
   - "NSObject+Rx (5.1.0)":
     - RxSwift (~> 5.1)
   - PTVRPlayer (1.0.0):
-    - Device (~> 3.2.1)
     - Then
   - Reusable (4.1.1):
     - Reusable/Storyboard (= 4.1.1)
@@ -30,7 +28,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Device
     - "NSObject+Rx"
     - Reusable
     - RxCocoa
@@ -44,9 +41,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Device: 0738862dd8a30856b4bd9e21cb9b728873d21392
   "NSObject+Rx": fa6bbcc1ab1faa06b01466bc09b1e0692bbc5946
-  PTVRPlayer: ceaa63f54305bf2eda9bae836de278ec9192a473
+  PTVRPlayer: b3d30254e02bb88f1e9ea119e5ca12e2e1857c8a
   Reusable: 53a9acf5c536f229b31b5865782414b508252ddb
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9

@@ -11,20 +11,20 @@
         <!--Player View Controller-->
         <scene sceneID="1hB-Sk-Twy">
             <objects>
-                <viewController storyboardIdentifier="PTPlayerViewController" id="f5K-i3-XWb" customClass="PTPlayerViewController" customModule="PTVRPlayer_Example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PTPlayerViewController" id="f5K-i3-XWb" customClass="PTPlayerViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ldH-fQ-lxD">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CxW-Es-s7Q" customClass="PTPanoramaView" customModule="PTVRPlayer">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="CxW-Es-s7Q" secondAttribute="bottom" id="0b3-eq-AIj"/>
-                            <constraint firstItem="CxW-Es-s7Q" firstAttribute="top" secondItem="ldH-fQ-lxD" secondAttribute="top" id="20R-yC-J0c"/>
+                            <constraint firstItem="Z9a-mT-pbd" firstAttribute="bottom" secondItem="CxW-Es-s7Q" secondAttribute="bottom" id="0b3-eq-AIj"/>
+                            <constraint firstItem="CxW-Es-s7Q" firstAttribute="top" secondItem="Z9a-mT-pbd" secondAttribute="top" id="20R-yC-J0c"/>
                             <constraint firstItem="CxW-Es-s7Q" firstAttribute="trailing" secondItem="Z9a-mT-pbd" secondAttribute="trailing" id="4jn-V4-Dig"/>
                             <constraint firstItem="CxW-Es-s7Q" firstAttribute="leading" secondItem="Z9a-mT-pbd" secondAttribute="leading" id="80D-Ro-F4P"/>
                         </constraints>

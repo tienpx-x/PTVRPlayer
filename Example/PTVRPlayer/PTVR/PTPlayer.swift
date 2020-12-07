@@ -2,7 +2,7 @@
 //  PTPlayer.swift
 //  PTVRPlayer
 //
-//  Created by Phạm Xuân Tiến on 11/2/20.
+//  Created by Phạm Xuân Tiến on 11/3/20.
 //  Copyright © 2020 CocoaPods. All rights reserved.
 //
 
@@ -28,6 +28,14 @@ class PTPlayer: AVPlayer {
     }
     
     @objc dynamic var isPlaying: Bool = false
+    
+    func seek(to time: TimeInterval, completion: @escaping (Bool) -> Void) {
+        var cmtime = CMTime(seconds: time, preferredTimescale: 33)
+        if let maxTime = currentItem?.duration.seconds, time > maxTime {
+            cmtime = CMTime(seconds: maxTime, preferredTimescale: 33)
+        }
+        seek(to: cmtime, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero, completionHandler: completion)
+    }
 
     deinit {
         print(String(describing: type(of: self)) + " deinit")

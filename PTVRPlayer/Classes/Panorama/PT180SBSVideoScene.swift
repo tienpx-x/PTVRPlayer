@@ -9,10 +9,6 @@ import SceneKit
 import Metal
 import AVFoundation
 
-public protocol PTVideoSceneDelegate: NSObject {
-    func render(atHostTime time: TimeInterval, commandBuffer: MTLCommandBuffer)
-}
-
 public class PT180SBSVideoScene: SCNScene {
     // SceneKit
     public lazy var leftMediaNode: PT180SBSMediaNode = {
@@ -27,9 +23,6 @@ public class PT180SBSVideoScene: SCNScene {
             $0.position = SCNVector3Make(0, -20, 0)
         }
     }()
-    
-    // Delegate
-    public weak var delegate: PTVideoSceneDelegate?
     
     // Render
     public var player: AVPlayer? {
@@ -105,7 +98,10 @@ public class PT180SBSVideoScene: SCNScene {
     public let leftOrientationNode: PTOrientationNode
     public let rightOrientationNode: PTOrientationNode
     
-    public init(device: MTLDevice, eye: Eye = .left, leftOrientationNode: PTOrientationNode, rightOrientationNode: PTOrientationNode) {
+    public init(device: MTLDevice,
+                eye: Eye = .left,
+                leftOrientationNode: PTOrientationNode,
+                rightOrientationNode: PTOrientationNode) {
         guard let commandQueue = device.makeCommandQueue() else {
             fatalError("Must have a command queue")
         }
@@ -200,8 +196,16 @@ extension PT180SBSVideoScene {
         CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
         defer { CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly) }
         var cacheOutput: CVMetalTexture?
-        CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, textureCache, pixelBuffer, nil, leftTexture.pixelFormat, leftTexture.width, leftTexture.height, 0, &cacheOutput)
-        
+        CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
+                                                  textureCache,
+                                                  pixelBuffer,
+                                                  nil,
+                                                  leftTexture.pixelFormat,
+                                                  leftTexture.width,
+                                                  leftTexture.height,
+                                                  0,
+                                                  &cacheOutput)
+
         guard let cvMetalTexture = cacheOutput else {
             fatalError("cvMetalTexture")
         }
@@ -252,7 +256,6 @@ extension PT180SBSVideoScene {
         let itemTime = videoOutput.itemTime(forHostTime: time)
         updateOrientation(time)
         try? render(atItemTime: itemTime, commandBuffer: commandBuffer)
-//        delegate?.render(atHostTime: time, commandBuffer: commandBuffer)
     }
 }
 

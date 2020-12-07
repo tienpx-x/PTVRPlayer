@@ -20,19 +20,24 @@ class EyeRenderingConfiguration {
 
 public class PTStereoScene: SCNScene {
     // SceneKit
-    var scene: SCNScene? {
+    var scene: PT180SBSVideoScene? {
         get {
-            return scnRenderer.scene
+            return leftSCNRenderer.scene as? PT180SBSVideoScene
         }
         set(value) {
-            scnRenderer.scene = value
+            leftSCNRenderer.scene = value
+            rightSCNRenderer.scene = value
         }
     }
-    
+
     var leftOrientationNode: PTOrientationNode?
     var rightOrientationNode: PTOrientationNode?
     
-    public lazy var scnRenderer: SCNRenderer = {
+    public lazy var leftSCNRenderer: SCNRenderer = {
+        return SCNRenderer(device: device, options: nil)
+    }()
+    
+    public lazy var rightSCNRenderer: SCNRenderer = {
         return SCNRenderer(device: device, options: nil)
     }()
     
@@ -70,7 +75,6 @@ public class PTStereoScene: SCNScene {
     }
     
     // Scene
-    
     lazy var pointOfView: SCNNode = {
         let camera = SCNCamera()
         camera.usesOrthographicProjection = true
@@ -143,6 +147,12 @@ extension PTStereoScene {
 extension PTStereoScene {
     public func setPointOfView(_ pointOfView: SCNNode?, for eye: Eye) {
         eyeRenderingConfigurations[eye]?.pointOfView = pointOfView
+        switch eye {
+        case .left:
+            leftSCNRenderer.pointOfView = pointOfView
+        case .right:
+            rightSCNRenderer.pointOfView = pointOfView
+        }
     }
     
     func pointOfView(for eye: Eye) -> SCNNode? {
@@ -154,7 +164,8 @@ extension PTStereoScene {
         guard let rightOrientationNode = rightOrientationNode else { return}
         
         var disableActions = false
-        if let provider = leftOrientationNode.deviceOrientationProvider, provider.shouldWaitDeviceOrientation(atTime: time) {
+        if let provider = leftOrientationNode.deviceOrientationProvider,
+            provider.shouldWaitDeviceOrientation(atTime: time) {
             provider.waitDeviceOrientation(atTime: time)
             disableActions = true
         }
@@ -164,8 +175,8 @@ extension PTStereoScene {
         SCNTransaction.animationDuration = 1 / 15
         SCNTransaction.disableActions = disableActions
         
-        leftOrientationNode.updateDeviceOrientation(atTime: time)
-        rightOrientationNode.updateDeviceOrientation(atTime: time)
+        leftOrientationNode.updateDeviceOrientation(scene: self, atTime: time, node: scene?.leftMediaNode, forEye: .left)
+        rightOrientationNode.updateDeviceOrientation(scene: self, atTime: time, node: scene?.rightMediaNode, forEye: .right)
         
         SCNTransaction.commit()
         SCNTransaction.unlock()
@@ -174,7 +185,8 @@ extension PTStereoScene {
 
 // MARK: - PTVideoSceneDelegate
 extension PTStereoScene {
-    public func render(atHostTime time: TimeInterval, commandQueue: MTLCommandQueue) {
+    public func render(atHostTime time: TimeInterval,
+                       commandQueue: MTLCommandQueue) {
         updateOrientation(time)
         guard let stereoTexture = stereoTexture else { return }
         let semaphore = renderSemaphore
@@ -186,16 +198,27 @@ extension PTStereoScene {
             
             let texture = configuration.texture
             let viewport = CGRect(x: 0, y: 0, width: texture.width, height: texture.height)
+            print("[LOG] VIEWPORT: \(viewport)")
             
             let passDescriptor = MTLRenderPassDescriptor()
             passDescriptor.colorAttachments[0].texture = texture
             passDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0, 0, 0, 1)
             passDescriptor.colorAttachments[0].storeAction = .store
             passDescriptor.colorAttachments[0].loadAction = .clear
-            
-            scnRenderer.pointOfView = configuration.pointOfView
-            scnRenderer.render(atTime: time, viewport: viewport, commandBuffer: commandBuffer, passDescriptor: passDescriptor)
-            
+                        
+            switch eye {
+            case .left:
+                leftSCNRenderer.render(atTime: time,
+                                       viewport: viewport,
+                                       commandBuffer: commandBuffer,
+                                       passDescriptor: passDescriptor)
+            case .right:
+                rightSCNRenderer.render(atTime: time,
+                                        viewport: viewport,
+                                        commandBuffer: commandBuffer,
+                                        passDescriptor: passDescriptor)
+            }
+
             let destinationOrigin: MTLOrigin
             switch eye {
             case .left:

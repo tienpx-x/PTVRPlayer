@@ -15,6 +15,8 @@ public struct DeviceRotation {
 public protocol DeviceOrientationProvider {
     func deviceOrientation(atTime time: TimeInterval) -> DeviceRotation?
     func shouldWaitDeviceOrientation(atTime time: TimeInterval) -> Bool
+    func getAccelertion() -> UIInterfaceOrientation
+    func reset()
 }
 
 extension DeviceOrientationProvider {
@@ -46,6 +48,32 @@ extension DeviceOrientationProvider {
 }
 
 extension CMMotionManager: DeviceOrientationProvider {
+    public func reset() {
+        stopDeviceMotionUpdates()
+        deviceMotionUpdateInterval = 1 / 60
+        startDeviceMotionUpdates()
+    }
+    
+    public func getAccelertion() -> UIInterfaceOrientation {
+        guard let acceleration = accelerometerData?.acceleration else {  return .unknown }
+        if acceleration.x >= 0.75 {
+            return .landscapeLeft
+        }
+        else if acceleration.x <= -0.75 {
+            return .landscapeRight
+        }
+        else if acceleration.y <= -0.75 {
+            return .portrait
+            
+        }
+        else if acceleration.y >= 0.75 {
+            return .portraitUpsideDown
+        }
+        else {
+            return .unknown
+        }
+    }
+    
     public func deviceOrientation(atTime time: TimeInterval) -> DeviceRotation? {
         guard let motion = deviceMotion else {
             return nil
@@ -80,49 +108,31 @@ extension CMMotionManager: DeviceOrientationProvider {
 }
 
 internal final class DefaultDeviceOrientationProvider: DeviceOrientationProvider {
-    private static let motionManager = CMMotionManager()
-    
-    private static let instanceCountQueue = DispatchQueue(label: "com.tienpx.PTVRPlayer.DefaultDeviceOrientationProvider.instanceCountQueue")
-    
-    private static var instanceCount: Int = 0 {
-        didSet {
-            let manager = motionManager
-            
-            guard manager.isDeviceMotionAvailable else {
-                return
-            }
-            
-            if instanceCount > 0, !manager.isDeviceMotionActive {
-                manager.deviceMotionUpdateInterval = 1 / 60
-                manager.startDeviceMotionUpdates()
-            } else if instanceCount == 0, manager.isDeviceMotionActive {
-                manager.stopDeviceMotionUpdates()
-            }
-        }
-    }
-    
-    private static func incrementInstanceCount() {
-        instanceCountQueue.async { instanceCount += 1 }
-    }
-    
-    private static func decrementInstanceCount() {
-        instanceCountQueue.async { instanceCount -= 1 }
-    }
-    
+    let motionManager = CMMotionManager()
+
     init() {
-        DefaultDeviceOrientationProvider.incrementInstanceCount()
+        motionManager.deviceMotionUpdateInterval = 1 / 60
+        motionManager.startDeviceMotionUpdates()
     }
     
     deinit {
-        DefaultDeviceOrientationProvider.decrementInstanceCount()
+        motionManager.stopDeviceMotionUpdates()
     }
     
     func deviceOrientation(atTime time: TimeInterval) -> DeviceRotation? {
-        return DefaultDeviceOrientationProvider.motionManager.deviceOrientation(atTime: time)
+        return motionManager.deviceOrientation(atTime: time)
     }
     
     func shouldWaitDeviceOrientation(atTime time: TimeInterval) -> Bool {
-        return DefaultDeviceOrientationProvider.motionManager.shouldWaitDeviceOrientation(atTime: time)
+        return motionManager.shouldWaitDeviceOrientation(atTime: time)
+    }
+    
+    func getAccelertion() -> UIInterfaceOrientation {
+        return motionManager.getAccelertion()
+    }
+    
+    func reset() {
+        return motionManager.reset()
     }
 }
 

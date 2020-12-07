@@ -2,7 +2,7 @@
 //  PTVRControlView.swift
 //  PTVRPlayer
 //
-//  Created by Phạm Xuân Tiến on 11/2/20.
+//  Created by Phạm Xuân Tiến on 11/5/20.
 //  Copyright © 2020 CocoaPods. All rights reserved.
 //
 
@@ -17,6 +17,11 @@ class PTVRControlView: UIView, NibOwnerLoadable, PTControlView {
     var isPlaying: Bool = false
     
     var isLoading: Bool = false
+    
+    var isSeeking: Bool = false
+    
+    var isEnded: Bool = false
+    
     var duration: TimeInterval = 0 {
         didSet {
             
@@ -44,6 +49,11 @@ class PTVRControlView: UIView, NibOwnerLoadable, PTControlView {
         self.binding()
     }
     
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        guard let view = subviews.first?.subviews.first else { return false }
+        return view.hitTest(convert(point, to: view), with: event) != nil
+    }
+    
     // MARK: - Methods
     
     func commonInit() {
@@ -57,5 +67,13 @@ class PTVRControlView: UIView, NibOwnerLoadable, PTControlView {
                 self.playerController?.endVRMode();
             })
             .disposed(by: rx.disposeBag)
+    }
+    
+    @objc func showControlView() {
+        
+    }
+    
+    @objc func hideControlView() {
+        
     }
 }

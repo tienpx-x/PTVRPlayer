@@ -14,6 +14,7 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		8F9DCAB66AC541FDC889A998 /* Pods_PTVRPlayer_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFAE634D4DB50D5BD9FFB214 /* Pods_PTVRPlayer_Tests.framework */; };
+		FF6822DE257A411700F549D5 /* PTUISlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6822DD257A411700F549D5 /* PTUISlider.swift */; };
 		FF6A3B1F2554E8740056FEE8 /* TimeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6A3B1E2554E8740056FEE8 /* TimeLabel.swift */; };
 		FF7B7DE12550138F00A30134 /* PTPlayerView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF7B7DE02550138F00A30134 /* PTPlayerView.storyboard */; };
 		FF7B7DE32550139A00A30134 /* PTPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7B7DE22550139A00A30134 /* PTPlayerViewController.swift */; };
@@ -28,7 +29,9 @@
 		FF853ADE2553B6C8001312D5 /* PTVRControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF853ADD2553B6C8001312D5 /* PTVRControlView.swift */; };
 		FF853AE02553B6ED001312D5 /* PTVRControlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF853ADF2553B6ED001312D5 /* PTVRControlView.xib */; };
 		FF853AE22553C550001312D5 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF853AE12553C550001312D5 /* UIView+.swift */; };
-		FFEE08A025763824006F164C /* 2VRひとみ座_9月0日稽古風景2-4K.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = FF18F6212574D206001B4A54 /* 2VRひとみ座_9月0日稽古風景2-4K.mp4 */; };
+		FF90078C2578EC4D006FD6D5 /* PTVRStereoControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF90078B2578EC4D006FD6D5 /* PTVRStereoControl.swift */; };
+		FF90078E2578EF12006FD6D5 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF90078D2578EF12006FD6D5 /* Util.swift */; };
+		FFF3C0F72588C5C200310C95 /* 2VRひとみ座_9月0日稽古風景2-2K.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = FF853AE32553CEA9001312D5 /* 2VRひとみ座_9月0日稽古風景2-2K.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +65,7 @@
 		DFAE634D4DB50D5BD9FFB214 /* Pods_PTVRPlayer_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PTVRPlayer_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF18F61D2574D10E001B4A54 /* 舞台芸術学院デモ_1-4K.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "舞台芸術学院デモ_1-4K.mp4"; sourceTree = "<group>"; };
 		FF18F6212574D206001B4A54 /* 2VRひとみ座_9月0日稽古風景2-4K.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "2VRひとみ座_9月0日稽古風景2-4K.mp4"; sourceTree = "<group>"; };
+		FF6822DD257A411700F549D5 /* PTUISlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTUISlider.swift; sourceTree = "<group>"; };
 		FF6A3B1E2554E8740056FEE8 /* TimeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLabel.swift; sourceTree = "<group>"; };
 		FF7B7DE02550138F00A30134 /* PTPlayerView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PTPlayerView.storyboard; sourceTree = "<group>"; };
 		FF7B7DE22550139A00A30134 /* PTPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPlayerViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +82,8 @@
 		FF853ADF2553B6ED001312D5 /* PTVRControlView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PTVRControlView.xib; sourceTree = "<group>"; };
 		FF853AE12553C550001312D5 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		FF853AE32553CEA9001312D5 /* 2VRひとみ座_9月0日稽古風景2-2K.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "2VRひとみ座_9月0日稽古風景2-2K.mp4"; sourceTree = "<group>"; };
+		FF90078B2578EC4D006FD6D5 /* PTVRStereoControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTVRStereoControl.swift; sourceTree = "<group>"; };
+		FF90078D2578EF12006FD6D5 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,7 +132,6 @@
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for PTVRPlayer */,
 				607FACE81AFB9204008FA782 /* Tests */,
-				607FACD11AFB9204008FA782 /* Products */,
 				2511511C6F7946C3EDD2D4D4 /* Pods */,
 				28B8D682BE5890F53AC295B0 /* Frameworks */,
 			);
@@ -139,6 +144,7 @@
 				607FACE51AFB9204008FA782 /* PTVRPlayer_Tests.xctest */,
 			);
 			name = Products;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		607FACD21AFB9204008FA782 /* Example for PTVRPlayer */ = {
@@ -147,8 +153,8 @@
 				FF853AE32553CEA9001312D5 /* 2VRひとみ座_9月0日稽古風景2-2K.mp4 */,
 				FF18F6212574D206001B4A54 /* 2VRひとみ座_9月0日稽古風景2-4K.mp4 */,
 				FF18F61D2574D10E001B4A54 /* 舞台芸術学院デモ_1-4K.mp4 */,
-				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
+				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
@@ -169,6 +175,7 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				607FACD11AFB9204008FA782 /* Products */,
 				607FACEB1AFB9204008FA782 /* Tests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
@@ -196,6 +203,7 @@
 		FF6A3B402554F30C0056FEE8 /* PTVR */ = {
 			isa = PBXGroup;
 			children = (
+				FF90078B2578EC4D006FD6D5 /* PTVRStereoControl.swift */,
 				FF7B7DE02550138F00A30134 /* PTPlayerView.storyboard */,
 				FF7B7DE22550139A00A30134 /* PTPlayerViewController.swift */,
 				FF7B7DE4255102E600A30134 /* PTPortraitControlView.swift */,
@@ -211,6 +219,8 @@
 				FF853ADF2553B6ED001312D5 /* PTVRControlView.xib */,
 				FF853AE12553C550001312D5 /* UIView+.swift */,
 				FF6A3B1E2554E8740056FEE8 /* TimeLabel.swift */,
+				FF90078D2578EF12006FD6D5 /* Util.swift */,
+				FF6822DD257A411700F549D5 /* PTUISlider.swift */,
 			);
 			path = PTVR;
 			sourceTree = "<group>";
@@ -310,7 +320,7 @@
 				FF853AE02553B6ED001312D5 /* PTVRControlView.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 				FF7B7DF225510D6A00A30134 /* PTLandscapeControlView.xib in Resources */,
-				FFEE08A025763824006F164C /* 2VRひとみ座_9月0日稽古風景2-4K.mp4 in Resources */,
+				FFF3C0F72588C5C200310C95 /* 2VRひとみ座_9月0日稽古風景2-2K.mp4 in Resources */,
 				FF7B7DE72551046D00A30134 /* PTPortraitControlView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,7 +364,6 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PTVRPlayer_Example/Pods-PTVRPlayer_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Device/Device.framework",
 				"${BUILT_PRODUCTS_DIR}/NSObject+Rx/NSObject_Rx.framework",
 				"${BUILT_PRODUCTS_DIR}/PTVRPlayer/PTVRPlayer.framework",
 				"${BUILT_PRODUCTS_DIR}/Reusable/Reusable.framework",
@@ -366,7 +375,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Device.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSObject_Rx.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PTVRPlayer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reusable.framework",
@@ -415,7 +423,10 @@
 				FF7B7DED2551098100A30134 /* UIDevice+Rx.swift in Sources */,
 				FF7B7DE92551067100A30134 /* PTPlayerController.swift in Sources */,
 				FF7B7DF4255113E600A30134 /* PTPlayer.swift in Sources */,
+				FF90078C2578EC4D006FD6D5 /* PTVRStereoControl.swift in Sources */,
+				FF6822DE257A411700F549D5 /* PTUISlider.swift in Sources */,
 				FF853AE22553C550001312D5 /* UIView+.swift in Sources */,
+				FF90078E2578EF12006FD6D5 /* Util.swift in Sources */,
 				FF7B7DE32550139A00A30134 /* PTPlayerViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				FF7B7DF62551180900A30134 /* PTControlView.swift in Sources */,

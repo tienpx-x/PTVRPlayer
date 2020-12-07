@@ -17,8 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = UIViewController()
         window?.makeKeyAndVisible()
-//        let url = URL(string: "https://www.w3schools.com/html/mov_bbb.mp4");
-        let url = Bundle.main.url(forResource: "2VRひとみ座_9月0日稽古風景2-4K", withExtension: "mp4")
+//                let url = URL(string: "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8");
+        let url = Bundle.main.url(forResource: "2VRひとみ座_9月0日稽古風景2-2K", withExtension: "mp4")
         let player = PTPlayer(url: url!)
         let vc = PTPlayerViewController.instantiate()
         vc.modalPresentationStyle = .fullScreen
@@ -33,7 +33,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication,
                      supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return .all
+        switch window?.tag ?? 0 {
+        case 999:
+            return .landscapeRight
+        case 99:
+            return .all
+        default:
+            return .portrait
+        }
     }
 }
 

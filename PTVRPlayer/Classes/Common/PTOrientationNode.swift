@@ -8,11 +8,22 @@
 import SceneKit
 import CoreMotion
 
+public protocol PTOrientationDelegate: class {
+    func didInRangeHorizontal(orientationNode: PTOrientationNode)
+    func didMaxLeftHorizontal(orientationNode: PTOrientationNode)
+    func didMaxRightHorizontal(orientationNode: PTOrientationNode)
+    func didInRangeVertical(orientationNode: PTOrientationNode)
+    func didMaxTopVertical(orientationNode: PTOrientationNode)
+    func didMaxBottomVertical(orientationNode: PTOrientationNode)
+}
+
 public class PTOrientationNode: SCNNode {
+    
+    public weak var delegate: PTOrientationDelegate?
+    
     public var maximumVerticalRotationAngle: Float?
     public var maximumHorizontalRotationAngle: Float?
     public var allowsUserRotation = false
-    public var initialAttitude: CMAttitude?
     
     let userRotationNode = SCNNode()
     let referenceRotationNode = SCNNode()
@@ -30,6 +41,22 @@ public class PTOrientationNode: SCNNode {
     public var deviceOrientationProvider: DeviceOrientationProvider? = DefaultDeviceOrientationProvider()
     
     public var interfaceOrientationProvider: InterfaceOrientationProvider? = DefaultInterfaceOrientationProvider()
+    
+    // Lock
+    var rHoz: Double = 45
+    var lHoz: Double = -45
+    var hozPlus: Double = 45
+
+    var tVer: Double = -40
+    var bVer: Double = -120
+    var rootHoz: Float = -180
+    var radiusHoz: Double = 90
+    
+    var previousYaw: Double = 0
+    var correctYaw: Double = 0
+    var multipleYaw: Double = 1
+    
+    private var initAttitude: CMAttitude?
     
     public override init() {
         super.init()
@@ -57,54 +84,89 @@ public class PTOrientationNode: SCNNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func updateDeviceOrientation(atTime time: TimeInterval = ProcessInfo.processInfo.systemUptime) {
+    public func updateDeviceOrientation(scene: PTStereoScene? = nil,
+                                        atTime time: TimeInterval = ProcessInfo.processInfo.systemUptime,
+                                        node: SCNNode? = nil,
+                                        forEye eye: Eye = .left) {
         guard let deviceRotation = deviceOrientationProvider?.deviceOrientation(atTime: time) else {
             return
         }
         if allowsUserRotation {
-            // TODO: Lock device orientation
-//            if let initialAttitude = initialAttitude {
-//                let userEulerAngle = userRotationNode.eulerAngles
-//                var roll = initialAttitude.roll - deviceRotation.attitude.roll
-//                var yaw = initialAttitude.yaw - deviceRotation.attitude.yaw
-//                var pitch = initialAttitude.pitch - deviceRotation.attitude.pitch
-//                print("Change \(rad2deg(yaw)) - \(rad2deg(roll)) - \(rad2deg(pitch))")
-//
-//                var angleX = Float(pitch) + userEulerAngle.x
-//                if let maximum = maximumVerticalRotationAngle {
-//                    angleX = min(angleX, maximum)
-//                } else {
-//                    angleX = Float(pitch)
-//                }
-//
-//                var angleY = Float(roll) + userEulerAngle.y
-//                if let maximum = maximumHorizontalRotationAngle {
-//                    angleY = min(angleY, maximum)
-//                } else {
-//                    angleY = Float(roll)
-//                }
-//                deviceOrientationNode.eulerAngles.x = angleX
-//                deviceOrientationNode.eulerAngles.y = angleY
-//            } else {
-//                initialAttitude = deviceRotation.attitude
-//            }
+            
         } else {
-            deviceOrientationNode.orientation = deviceRotation.rotation.scnQuaternion
+            var rotation = deviceRotation.rotation
+            
+            let x = rad2deg(deviceRotation.attitude.roll)
+            let y = rad2deg(deviceRotation.attitude.yaw)
+            let z = rad2deg(deviceRotation.attitude.pitch)
+            // In [0,360]
+            let _ = (y + 450).truncatingRemainder(dividingBy: 360)
+            if let _ = initAttitude {
+            } else {
+                initAttitude = deviceRotation.attitude
+            }
+            if let node = node {
+                var currentYaw = (y + correctYaw) * multipleYaw
+                // Rotate
+                if(z < 60 && z > -60) {
+                    
+                } else {
+                    return
+                }
+                
+                // Direction
+                if(self.previousYaw < -170 && y > 170) {
+                    deviceOrientationProvider?.reset()
+                    currentYaw = 0
+                    initAttitude = nil
+                    lHoz = 0
+                    rHoz = 45
+                    return
+                } else if(self.previousYaw > 170 && y < 0) {
+                    deviceOrientationProvider?.reset()
+                    currentYaw = 0
+                    initAttitude = nil
+                    lHoz = -45
+                    rHoz = 0
+                    return
+                }
+
+                // Horizontal
+                if(currentYaw > rHoz) {
+                    let rad = deg2rad(rootHoz) + Float(deg2rad(currentYaw - hozPlus))
+                    node.eulerAngles.y = rad
+                    lHoz = currentYaw - radiusHoz
+                    rHoz = currentYaw
+                    delegate?.didMaxRightHorizontal(orientationNode: self)
+                } else if (currentYaw < lHoz) {
+                    let rad = deg2rad(rootHoz) + Float(deg2rad(currentYaw + hozPlus))
+                    node.eulerAngles.y = rad
+                    rHoz = currentYaw + radiusHoz
+                    lHoz = currentYaw
+                    delegate?.didMaxLeftHorizontal(orientationNode: self)
+                } else {
+                    delegate?.didInRangeHorizontal(orientationNode: self)
+                }
+                
+                // Vertical
+                if(x > self.tVer) {
+                    rotation.rotate(byY: Float(deg2rad(self.tVer - x)))
+                    delegate?.didMaxBottomVertical(orientationNode: self)
+                } else if (x < self.bVer) {
+                    rotation.rotate(byY: Float(deg2rad(self.bVer - x)))
+                    delegate?.didMaxTopVertical(orientationNode: self)
+                } else {
+                    delegate?.didInRangeVertical(orientationNode: self)
+                }
+            }
+            print("[LOG-PARAM] \(y) - L: \(lHoz) R: \(rHoz)")
+            self.previousYaw = y
+//            if eye == .right {
+//                let x = PTTouchModel().rotateCenter
+//                rotation.rotate(byX: deg2rad(x))
+//            }
+            self.deviceOrientationNode.orientation = rotation.scnQuaternion
         }
-        //        deviceOrientationNode.orientation = rotation.scnQuaternion
-        //        var angleX = eulerAngles.x
-        //        if let maximum = maximumVerticalRotationAngle {
-        //            angleX = min(angleX, maximum)
-        //        }
-        //        eulerAngles.x = angleX
-        //
-        //        var angleY = eulerAngles.y
-        //        if let maximum = maximumHorizontalRotationAngle {
-        //            angleY = min(angleY, maximum)
-        //        }
-        //        eulerAngles.y = angleY
-        
-        //        deviceOrientationNode.eulerAngles = eulerAngles
     }
     
     public func updateInterfaceOrientation(atTime time: TimeInterval = ProcessInfo.processInfo.systemUptime) {
@@ -147,6 +209,14 @@ public class PTOrientationNode: SCNNode {
         let r3 = r1 * r2
         referenceRotationNode.transform = r3.scnMatrix4
         userRotationNode.transform = SCNMatrix4Identity
+    }
+    
+    public func fullResetRotation() {
+        eulerAngles = SCNVector3Zero
+        userRotationNode.eulerAngles = SCNVector3Zero
+        referenceRotationNode.eulerAngles = SCNVector3Zero
+        deviceOrientationNode.eulerAngles = SCNVector3Zero
+        interfaceOrientationNode.eulerAngles = SCNVector3Zero
     }
     
     public func resetRotation(animated: Bool, completionHanlder: (() -> Void)? = nil) {

@@ -32,12 +32,7 @@ TODO: Add long description of the pod here.
 
   s.source_files = 'PTVRPlayer/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'PTVRPlayer' => ['PTVRPlayer/Assets/*.png']
-  # }
-
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-   s.dependency 'Device', '~> 3.2.1'
    s.dependency 'Then'
 end

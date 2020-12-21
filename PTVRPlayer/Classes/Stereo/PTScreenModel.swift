@@ -28,7 +28,7 @@ public class PTScreenModel: ScreenParametersProtocol {
             return ScreenParameters(width: 0.134, height: 0.06, border: 0.005)
         case .iPhone12Pro_Max: // 6.7 inch
             // TODO
-            return ScreenParameters(width: 0.134, height: 0.06, border: 0.005)
+            return ScreenParameters(width: 0.12, height: 0.06, border: 0.005)
         default:
             return ScreenParameters(width: 0, height: 0, border: 0)
         }

@@ -43,7 +43,7 @@ public final class PT180SBSMediaNode: SCNNode {
         DispatchQueue.main.async {
             let sphereEffect = SCNTube(innerRadius: self.radius - 0.02,
                                        outerRadius: self.radius - 0.01,
-                                       height: 1.2).then {
+                                       height: 1).then {
                 $0.firstMaterial?.cullMode = .front
                 $0.firstMaterial?.diffuse.contents = image.cgImage
             }

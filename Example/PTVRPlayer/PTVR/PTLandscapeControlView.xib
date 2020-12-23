@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PTLandscapeControlView" customModule="PTVRPlayer_Example" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PTLandscapeControlView" customModule="Runner" customModuleProvider="target">
             <connections>
                 <outlet property="back30sButton" destination="dz5-BO-Vx7" id="Xvx-Wc-bMJ"/>
-                <outlet property="closeButton" destination="6ta-Gv-kLU" id="H1e-sI-OP0"/>
+                <outlet property="closeButton" destination="6ta-Gv-kLU" id="mQ1-q7-s1g"/>
                 <outlet property="containerView" destination="Ppk-WQ-HLO" id="d2s-uG-TCV"/>
                 <outlet property="focusButton" destination="MIg-zf-XEF" id="N0U-gu-JLQ"/>
                 <outlet property="indicator" destination="vYk-Ub-akK" id="jX0-7Z-S4b"/>
@@ -28,8 +28,13 @@
             <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6ta-Gv-kLU">
+                    <rect key="frame" x="0.0" y="44" width="56" height="56"/>
+                    <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                    <state key="normal" image="ic_close"/>
+                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ppk-WQ-HLO">
-                    <rect key="frame" x="22.5" y="322" width="851" height="48"/>
+                    <rect key="frame" x="22.5" y="356" width="851" height="48"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UgO-dh-QV4">
                             <rect key="frame" x="44" y="10" width="28" height="28"/>
@@ -61,13 +66,13 @@
                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="hSk-36-GSy">
                             <rect key="frame" x="152" y="9" width="578" height="31"/>
                         </slider>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vVh-B2-dSc" customClass="TimeLabel" customModule="PTVRPlayer_Example" customModuleProvider="target">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vVh-B2-dSc" customClass="TimeLabel" customModule="Runner" customModuleProvider="target">
                             <rect key="frame" x="112" y="16.5" width="34" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.78039215689999997" green="0.79215686269999996" blue="0.81960784310000001" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1oT-yq-90W" customClass="TimeLabel" customModule="PTVRPlayer_Example" customModuleProvider="target">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1oT-yq-90W" customClass="TimeLabel" customModule="Runner" customModuleProvider="target">
                             <rect key="frame" x="736" y="16.5" width="34" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.78039215689999997" green="0.79215686269999996" blue="0.81960784310000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -117,32 +122,24 @@
                         <constraint firstItem="hSk-36-GSy" firstAttribute="leading" secondItem="vVh-B2-dSc" secondAttribute="trailing" constant="8" id="vOq-vj-o0h"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6ta-Gv-kLU">
-                    <rect key="frame" x="12.5" y="49" width="56" height="56"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="56" id="q0g-Jr-3LD"/>
-                        <constraint firstAttribute="width" constant="56" id="zKp-mb-Aff"/>
-                    </constraints>
-                    <state key="normal" image="ic_close"/>
-                </button>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="vYk-Ub-akK">
                     <rect key="frame" x="429.5" y="188.5" width="37" height="37"/>
                     <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </activityIndicatorView>
             </subviews>
-            <viewLayoutGuide key="safeArea" id="OSL-PT-tjg"/>
+            <viewLayoutGuide key="safeArea" id="AVF-E4-9qH"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="AVF-E4-9qH" firstAttribute="top" secondItem="6ta-Gv-kLU" secondAttribute="top" id="FaY-LY-deo"/>
                 <constraint firstItem="Ppk-WQ-HLO" firstAttribute="width" secondItem="Clx-L1-2dh" secondAttribute="width" multiplier="0.95" id="GHc-Bw-f8q"/>
-                <constraint firstItem="OSL-PT-tjg" firstAttribute="bottom" secondItem="Ppk-WQ-HLO" secondAttribute="bottom" constant="10" id="KkC-2G-TKN"/>
-                <constraint firstItem="6ta-Gv-kLU" firstAttribute="top" secondItem="OSL-PT-tjg" secondAttribute="top" constant="5" id="Vi7-5o-rSS"/>
+                <constraint firstAttribute="bottom" secondItem="Ppk-WQ-HLO" secondAttribute="bottom" constant="10" id="KkC-2G-TKN"/>
+                <constraint firstItem="6ta-Gv-kLU" firstAttribute="leading" secondItem="AVF-E4-9qH" secondAttribute="leading" id="VP2-mS-hcW"/>
                 <constraint firstItem="vYk-Ub-akK" firstAttribute="centerX" secondItem="Clx-L1-2dh" secondAttribute="centerX" id="bB3-Bs-IEx"/>
                 <constraint firstItem="vYk-Ub-akK" firstAttribute="centerY" secondItem="Clx-L1-2dh" secondAttribute="centerY" id="etR-Oy-ydn"/>
                 <constraint firstItem="Ppk-WQ-HLO" firstAttribute="centerX" secondItem="Clx-L1-2dh" secondAttribute="centerX" id="o2O-8o-8eV"/>
-                <constraint firstItem="6ta-Gv-kLU" firstAttribute="leading" secondItem="OSL-PT-tjg" secondAttribute="leading" constant="12.5" id="tnD-Li-1VK"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="125" y="118"/>
+            <point key="canvasLocation" x="124.6376811594203" y="117.85714285714285"/>
         </view>
     </objects>
     <resources>

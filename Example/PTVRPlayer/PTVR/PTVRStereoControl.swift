@@ -30,12 +30,12 @@ class PTVRStereoControl {
     lazy var titleLabel: UILabel = {
         return UILabel(frame: CGRect(x: 0, y: 0, width: tWidth, height: 20)).then {
             $0.isOpaque = false
-            $0.text = "Amet minim mollit non dese asdsadsadsadasdasdasds sad asd sad sa asdsadads"
+            $0.text = controller?.currentVideo?.title ?? ""
             $0.textColor = .white
             $0.adjustsFontSizeToFitWidth = false
             $0.lineBreakMode = .byTruncatingTail
             $0.textAlignment = .center
-            $0.font = UIFont.systemFont(ofSize: 8)
+            $0.font = UIFont.boldSystemFont(ofSize: 8)
         }
     }()
     
@@ -52,20 +52,20 @@ class PTVRStereoControl {
     }()
     
     lazy var leftTimeLabel: TimeLabel = {
-        return TimeLabel(frame: CGRect(x: 0, y: 0, width: tWidth / 2, height: tHeight)).then {
+        return TimeLabel(frame: CGRect(x: 0, y: -10, width: tWidth / 2, height: tHeight)).then {
             $0.isOpaque = false
             $0.textColor = .white
             $0.textAlignment = .left
-            $0.font = UIFont.systemFont(ofSize: 8)
+            $0.font = UIFont.boldSystemFont(ofSize: 8)
         }
     }()
     
     lazy var rightTimeLabel: TimeLabel = {
-        return TimeLabel(frame: CGRect(x: tWidth / 2, y: 0, width: tWidth / 2, height: tHeight)).then {
+        return TimeLabel(frame: CGRect(x: tWidth / 2, y: -10, width: tWidth / 2, height: tHeight)).then {
             $0.isOpaque = false
             $0.textColor = .white
             $0.textAlignment = .right
-            $0.font = UIFont.systemFont(ofSize: 8)
+            $0.font = UIFont.boldSystemFont(ofSize: 8)
         }
     }()
     
@@ -112,16 +112,15 @@ class PTVRStereoControl {
             $0.setImage(#imageLiteral(resourceName: "ic_prev30"), for: .normal)
         }
     }()
-    
+     
     // Nodes
     
     lazy var opacityNode: PTRenderObject = {
-        let node = PTRenderObject(geometry: SCNSphere(radius: 9.99).then {
+        let node = PTRenderObject(geometry: SCNSphere(radius: 9.6).then {
             $0.firstMaterial?.diffuse.contents = UIColor.black.withAlphaComponent(0.7)
             $0.segmentCount = 96
-            $0.firstMaterial?.cullMode = .front
+            $0.firstMaterial?.isDoubleSided = true
         })
-        node.scale = SCNVector3(x: 1, y: 1, z: -1)
         node.name = "Base Object"
         return node
     }()
@@ -140,7 +139,6 @@ class PTVRStereoControl {
         node.addChildNode(timeNode)
         node.addChildNode(next30Node)
         node.addChildNode(back30Node)
-//        node.addChildNode(hideNode)
         node.name = "Base Object"
         node.position = SCNVector3Make(startP, up, 0)
         return node
@@ -182,6 +180,7 @@ class PTVRStereoControl {
                 self.playButton.backgroundColor = self.buttonColor
             }
             $0.position = SCNVector3Make(0, -0.1 , 0)
+            $0.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
         }
         return object
     }()
@@ -211,6 +210,7 @@ class PTVRStereoControl {
                 self.next30Button.backgroundColor = self.buttonColor
             }
             $0.position = SCNVector3Make(0.12, -0.1 , 0)
+            $0.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
         }
         return object
     }()
@@ -240,47 +240,36 @@ class PTVRStereoControl {
                 self.prev30Button.backgroundColor = self.buttonColor
             }
             $0.position = SCNVector3Make(-0.12, -0.1 , 0)
+            $0.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
         }
         return object
     }()
     
     lazy var progressNode: PTRenderObject = {
         return PTRenderObject(geometry: SCNPlane(width: sWidth, height: 0.02).then {
-            $0.firstMaterial?.diffuse.contents = progressSlider
+            $0.firstMaterial?.diffuse.contents = progressSlider.layer
             $0.firstMaterial?.cullMode = .front
         }).then {
             $0.name = "Progress Node"
             $0.canFocused = true
             $0.type = .slider(0)
-            $0.action = { time in
+            $0.action = { [weak self] time in
+                guard let self = self else { return }
                 guard let time = time as? TimeInterval else { return }
                 self.controller?.seek(to: time, completion: nil)
             }
             $0.position = SCNVector3Make(0, -0.2 , 0)
+            $0.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
         }
     }()
     
     lazy var timeNode: PTRenderObject = {
-        return PTRenderObject(geometry: SCNPlane(width: sWidth, height: 0.1).then {
+        return PTRenderObject(geometry: SCNPlane(width: sWidth, height: 0.08).then {
             $0.firstMaterial?.diffuse.contents = timeView
             $0.firstMaterial?.cullMode = .front
         }).then {
             $0.name = "Time Node"
-            $0.position = SCNVector3Make(0, -0.260 , 0)
-        }
-    }()
-    
-    lazy var hideNode: PTRenderObject = {
-        return PTRenderObject(geometry: SCNPlane(width: 0.03, height: 0.03).then {
-            $0.firstMaterial?.diffuse.contents = UIColor.red
-            $0.firstMaterial?.cullMode = .front
-        }).then {
-            $0.name = "Hide Node"
-            $0.position = SCNVector3Make(0, -0.260 , 0)
-            $0.canFocused = true
-            $0.action = { _ in
-                self.controller?.stereoView?.hideController()
-            }
+            $0.position = SCNVector3Make(0, -0.258 , 0)
         }
     }()
 }

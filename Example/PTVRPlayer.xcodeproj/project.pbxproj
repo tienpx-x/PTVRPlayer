@@ -10,27 +10,33 @@
 		287BA30FBFEF659D5C71FF9F /* Pods_PTVRPlayer_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 302834FC3F57A5C4ABDC62DC /* Pods_PTVRPlayer_Example.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
-		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		8F9DCAB66AC541FDC889A998 /* Pods_PTVRPlayer_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFAE634D4DB50D5BD9FFB214 /* Pods_PTVRPlayer_Tests.framework */; };
 		FF6822DE257A411700F549D5 /* PTUISlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6822DD257A411700F549D5 /* PTUISlider.swift */; };
-		FF6A3B1F2554E8740056FEE8 /* TimeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6A3B1E2554E8740056FEE8 /* TimeLabel.swift */; };
 		FF7B7DE12550138F00A30134 /* PTPlayerView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF7B7DE02550138F00A30134 /* PTPlayerView.storyboard */; };
 		FF7B7DE32550139A00A30134 /* PTPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7B7DE22550139A00A30134 /* PTPlayerViewController.swift */; };
 		FF7B7DE5255102E600A30134 /* PTPortraitControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7B7DE4255102E600A30134 /* PTPortraitControlView.swift */; };
 		FF7B7DE72551046D00A30134 /* PTPortraitControlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF7B7DE62551046D00A30134 /* PTPortraitControlView.xib */; };
 		FF7B7DE92551067100A30134 /* PTPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7B7DE82551067100A30134 /* PTPlayerController.swift */; };
-		FF7B7DED2551098100A30134 /* UIDevice+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7B7DEC2551098100A30134 /* UIDevice+Rx.swift */; };
 		FF7B7DF025510D6100A30134 /* PTLandscapeControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7B7DEF25510D6100A30134 /* PTLandscapeControlView.swift */; };
 		FF7B7DF225510D6A00A30134 /* PTLandscapeControlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF7B7DF125510D6A00A30134 /* PTLandscapeControlView.xib */; };
 		FF7B7DF4255113E600A30134 /* PTPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7B7DF3255113E600A30134 /* PTPlayer.swift */; };
 		FF7B7DF62551180900A30134 /* PTControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7B7DF52551180900A30134 /* PTControlView.swift */; };
 		FF853ADE2553B6C8001312D5 /* PTVRControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF853ADD2553B6C8001312D5 /* PTVRControlView.swift */; };
 		FF853AE02553B6ED001312D5 /* PTVRControlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF853ADF2553B6ED001312D5 /* PTVRControlView.xib */; };
-		FF853AE22553C550001312D5 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF853AE12553C550001312D5 /* UIView+.swift */; };
 		FF90078C2578EC4D006FD6D5 /* PTVRStereoControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF90078B2578EC4D006FD6D5 /* PTVRStereoControl.swift */; };
-		FF90078E2578EF12006FD6D5 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF90078D2578EF12006FD6D5 /* Util.swift */; };
+		FFA9F664259361D500FC4543 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA9F65C259361D500FC4543 /* UIView+.swift */; };
+		FFA9F665259361D500FC4543 /* Bottomsheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA9F65D259361D500FC4543 /* Bottomsheet.swift */; };
+		FFA9F666259361D500FC4543 /* TimeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA9F65E259361D500FC4543 /* TimeLabel.swift */; };
+		FFA9F667259361D500FC4543 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA9F65F259361D500FC4543 /* UIViewController+.swift */; };
+		FFA9F668259361D500FC4543 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA9F660259361D500FC4543 /* Util.swift */; };
+		FFA9F669259361D500FC4543 /* UIDevice+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA9F661259361D500FC4543 /* UIDevice+Rx.swift */; };
+		FFA9F66A259361D500FC4543 /* PTVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA9F663259361D500FC4543 /* PTVideo.swift */; };
+		FFA9F6732593624A00FC4543 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA9F6722593624A00FC4543 /* Video.swift */; };
+		FFA9F68E2593633200FC4543 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFA9F68D2593633200FC4543 /* Assets.xcassets */; };
+		FFD432D2259305EF00D76DCC /* PTVRSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD432D1259305EF00D76DCC /* PTVRSettings.swift */; };
+		FFD432D6259305FD00D76DCC /* PTVRSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFD432D5259305FD00D76DCC /* PTVRSettings.xib */; };
 		FFF3C0F72588C5C200310C95 /* 2VRひとみ座_9月0日稽古風景2-2K.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = FF853AE32553CEA9001312D5 /* 2VRひとみ座_9月0日稽古風景2-2K.mp4 */; };
 /* End PBXBuildFile section */
 
@@ -53,7 +59,6 @@
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* PTVRPlayer_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PTVRPlayer_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -66,24 +71,31 @@
 		FF18F61D2574D10E001B4A54 /* 舞台芸術学院デモ_1-4K.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "舞台芸術学院デモ_1-4K.mp4"; sourceTree = "<group>"; };
 		FF18F6212574D206001B4A54 /* 2VRひとみ座_9月0日稽古風景2-4K.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "2VRひとみ座_9月0日稽古風景2-4K.mp4"; sourceTree = "<group>"; };
 		FF6822DD257A411700F549D5 /* PTUISlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTUISlider.swift; sourceTree = "<group>"; };
-		FF6A3B1E2554E8740056FEE8 /* TimeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLabel.swift; sourceTree = "<group>"; };
 		FF7B7DE02550138F00A30134 /* PTPlayerView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PTPlayerView.storyboard; sourceTree = "<group>"; };
 		FF7B7DE22550139A00A30134 /* PTPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPlayerViewController.swift; sourceTree = "<group>"; };
 		FF7B7DE4255102E600A30134 /* PTPortraitControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPortraitControlView.swift; sourceTree = "<group>"; };
 		FF7B7DE62551046D00A30134 /* PTPortraitControlView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PTPortraitControlView.xib; sourceTree = "<group>"; };
 		FF7B7DE82551067100A30134 /* PTPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPlayerController.swift; sourceTree = "<group>"; };
-		FF7B7DEC2551098100A30134 /* UIDevice+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Rx.swift"; sourceTree = "<group>"; };
-		FF7B7DEE25510B0900A30134 /* PTVRPlayer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PTVRPlayer-Bridging-Header.h"; sourceTree = "<group>"; };
 		FF7B7DEF25510D6100A30134 /* PTLandscapeControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTLandscapeControlView.swift; sourceTree = "<group>"; };
 		FF7B7DF125510D6A00A30134 /* PTLandscapeControlView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PTLandscapeControlView.xib; sourceTree = "<group>"; };
 		FF7B7DF3255113E600A30134 /* PTPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPlayer.swift; sourceTree = "<group>"; };
 		FF7B7DF52551180900A30134 /* PTControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTControlView.swift; sourceTree = "<group>"; };
 		FF853ADD2553B6C8001312D5 /* PTVRControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTVRControlView.swift; sourceTree = "<group>"; };
 		FF853ADF2553B6ED001312D5 /* PTVRControlView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PTVRControlView.xib; sourceTree = "<group>"; };
-		FF853AE12553C550001312D5 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		FF853AE32553CEA9001312D5 /* 2VRひとみ座_9月0日稽古風景2-2K.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "2VRひとみ座_9月0日稽古風景2-2K.mp4"; sourceTree = "<group>"; };
 		FF90078B2578EC4D006FD6D5 /* PTVRStereoControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTVRStereoControl.swift; sourceTree = "<group>"; };
-		FF90078D2578EF12006FD6D5 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		FFA9F65C259361D500FC4543 /* UIView+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		FFA9F65D259361D500FC4543 /* Bottomsheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bottomsheet.swift; sourceTree = "<group>"; };
+		FFA9F65E259361D500FC4543 /* TimeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeLabel.swift; sourceTree = "<group>"; };
+		FFA9F65F259361D500FC4543 /* UIViewController+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
+		FFA9F660259361D500FC4543 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		FFA9F661259361D500FC4543 /* UIDevice+Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Rx.swift"; sourceTree = "<group>"; };
+		FFA9F662259361D500FC4543 /* PTVRPlayer-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PTVRPlayer-Bridging-Header.h"; sourceTree = "<group>"; };
+		FFA9F663259361D500FC4543 /* PTVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTVideo.swift; sourceTree = "<group>"; };
+		FFA9F6722593624A00FC4543 /* Video.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		FFA9F68D2593633200FC4543 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FFD432D1259305EF00D76DCC /* PTVRSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTVRSettings.swift; sourceTree = "<group>"; };
+		FFD432D5259305FD00D76DCC /* PTVRSettings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PTVRSettings.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,9 +166,10 @@
 				FF18F6212574D206001B4A54 /* 2VRひとみ座_9月0日稽古風景2-4K.mp4 */,
 				FF18F61D2574D10E001B4A54 /* 舞台芸術学院デモ_1-4K.mp4 */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
+				FFA9F68D2593633200FC4543 /* Assets.xcassets */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
-				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
+				FFA9F6712593624A00FC4543 /* Model */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 				FF6A3B402554F30C0056FEE8 /* PTVR */,
 			);
@@ -203,26 +216,47 @@
 		FF6A3B402554F30C0056FEE8 /* PTVR */ = {
 			isa = PBXGroup;
 			children = (
+				FFA9F662259361D500FC4543 /* PTVRPlayer-Bridging-Header.h */,
+				FFA9F65B259361D500FC4543 /* Common */,
+				FFD432D1259305EF00D76DCC /* PTVRSettings.swift */,
+				FFD432D5259305FD00D76DCC /* PTVRSettings.xib */,
 				FF90078B2578EC4D006FD6D5 /* PTVRStereoControl.swift */,
 				FF7B7DE02550138F00A30134 /* PTPlayerView.storyboard */,
 				FF7B7DE22550139A00A30134 /* PTPlayerViewController.swift */,
 				FF7B7DE4255102E600A30134 /* PTPortraitControlView.swift */,
 				FF7B7DE62551046D00A30134 /* PTPortraitControlView.xib */,
 				FF7B7DE82551067100A30134 /* PTPlayerController.swift */,
-				FF7B7DEC2551098100A30134 /* UIDevice+Rx.swift */,
-				FF7B7DEE25510B0900A30134 /* PTVRPlayer-Bridging-Header.h */,
 				FF7B7DEF25510D6100A30134 /* PTLandscapeControlView.swift */,
 				FF7B7DF125510D6A00A30134 /* PTLandscapeControlView.xib */,
 				FF7B7DF3255113E600A30134 /* PTPlayer.swift */,
 				FF7B7DF52551180900A30134 /* PTControlView.swift */,
 				FF853ADD2553B6C8001312D5 /* PTVRControlView.swift */,
 				FF853ADF2553B6ED001312D5 /* PTVRControlView.xib */,
-				FF853AE12553C550001312D5 /* UIView+.swift */,
-				FF6A3B1E2554E8740056FEE8 /* TimeLabel.swift */,
-				FF90078D2578EF12006FD6D5 /* Util.swift */,
 				FF6822DD257A411700F549D5 /* PTUISlider.swift */,
 			);
 			path = PTVR;
+			sourceTree = "<group>";
+		};
+		FFA9F65B259361D500FC4543 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				FFA9F65C259361D500FC4543 /* UIView+.swift */,
+				FFA9F65D259361D500FC4543 /* Bottomsheet.swift */,
+				FFA9F65E259361D500FC4543 /* TimeLabel.swift */,
+				FFA9F65F259361D500FC4543 /* UIViewController+.swift */,
+				FFA9F660259361D500FC4543 /* Util.swift */,
+				FFA9F661259361D500FC4543 /* UIDevice+Rx.swift */,
+				FFA9F663259361D500FC4543 /* PTVideo.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		FFA9F6712593624A00FC4543 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				FFA9F6722593624A00FC4543 /* Video.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -318,9 +352,10 @@
 				FF7B7DE12550138F00A30134 /* PTPlayerView.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				FF853AE02553B6ED001312D5 /* PTVRControlView.xib in Resources */,
-				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 				FF7B7DF225510D6A00A30134 /* PTLandscapeControlView.xib in Resources */,
+				FFD432D6259305FD00D76DCC /* PTVRSettings.xib in Resources */,
 				FFF3C0F72588C5C200310C95 /* 2VRひとみ座_9月0日稽古風景2-2K.mp4 in Resources */,
+				FFA9F68E2593633200FC4543 /* Assets.xcassets in Resources */,
 				FF7B7DE72551046D00A30134 /* PTPortraitControlView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -364,24 +399,36 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PTVRPlayer_Example/Pods-PTVRPlayer_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FittedSheets/FittedSheets.framework",
+				"${BUILT_PRODUCTS_DIR}/FontAwesome.swift/FontAwesome_swift.framework",
 				"${BUILT_PRODUCTS_DIR}/NSObject+Rx/NSObject_Rx.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/PTVRPlayer/PTVRPlayer.framework",
+				"${BUILT_PRODUCTS_DIR}/QRCodeReader.swift/QRCodeReader.framework",
+				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/Reusable/Reusable.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/Then/Then.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FittedSheets.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FontAwesome_swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSObject_Rx.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PTVRPlayer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QRCodeReader.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reusable.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftProtobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Then.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -418,17 +465,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF6A3B1F2554E8740056FEE8 /* TimeLabel.swift in Sources */,
+				FFA9F66A259361D500FC4543 /* PTVideo.swift in Sources */,
 				FF7B7DF025510D6100A30134 /* PTLandscapeControlView.swift in Sources */,
-				FF7B7DED2551098100A30134 /* UIDevice+Rx.swift in Sources */,
+				FFA9F667259361D500FC4543 /* UIViewController+.swift in Sources */,
+				FFA9F669259361D500FC4543 /* UIDevice+Rx.swift in Sources */,
+				FFA9F666259361D500FC4543 /* TimeLabel.swift in Sources */,
+				FFA9F668259361D500FC4543 /* Util.swift in Sources */,
 				FF7B7DE92551067100A30134 /* PTPlayerController.swift in Sources */,
 				FF7B7DF4255113E600A30134 /* PTPlayer.swift in Sources */,
 				FF90078C2578EC4D006FD6D5 /* PTVRStereoControl.swift in Sources */,
+				FFA9F665259361D500FC4543 /* Bottomsheet.swift in Sources */,
 				FF6822DE257A411700F549D5 /* PTUISlider.swift in Sources */,
-				FF853AE22553C550001312D5 /* UIView+.swift in Sources */,
-				FF90078E2578EF12006FD6D5 /* Util.swift in Sources */,
+				FFA9F664259361D500FC4543 /* UIView+.swift in Sources */,
+				FFD432D2259305EF00D76DCC /* PTVRSettings.swift in Sources */,
 				FF7B7DE32550139A00A30134 /* PTPlayerViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				FFA9F6732593624A00FC4543 /* Video.swift in Sources */,
 				FF7B7DF62551180900A30134 /* PTControlView.swift in Sources */,
 				FF7B7DE5255102E600A30134 /* PTPortraitControlView.swift in Sources */,
 				FF853ADE2553B6C8001312D5 /* PTVRControlView.swift in Sources */,

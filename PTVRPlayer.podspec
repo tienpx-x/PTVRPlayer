@@ -32,7 +32,9 @@ TODO: Add long description of the pod here.
 
   s.source_files = 'PTVRPlayer/Classes/**/*'
   
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
+   s.public_header_files = 'Pod/Classes/**/*.h'
    s.dependency 'Then'
+   s.dependency 'SwiftProtobuf'
+   s.dependency 'Result'
+   
 end

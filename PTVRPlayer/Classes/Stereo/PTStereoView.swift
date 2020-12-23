@@ -28,16 +28,11 @@ public final class PTStereoView: UIView {
     
     // Touch + Focus
     
-    public lazy var leftTouchView: UIView = {
-        return UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-    }()
-    
-    public lazy var rightTouchView: UIView = {
+    public lazy var touchView: UIView = {
         return UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
     }()
     
     // Controller Properties
-    private let touchModel = PTTouchModel()
     private var currentFocus: PTRenderObject?
     private var currentFocused: PTRenderObject?
     var currentFocusTime: Double = 0
@@ -81,8 +76,7 @@ public final class PTStereoView: UIView {
     public let stereoTexture: MTLTexture
     public let device: MTLDevice
     
-    public var stereoParameters = StereoParameters(screen: PTScreenModel(),
-                                                   viewer: PTViewerModel.googleCardboard)
+    public var stereoParameters = StereoParameters(screen: PTScreenModel(), viewer: PTViewerModel.cardboardMay2015)
     
     public lazy var stereoScene: PTStereoScene = {
         let scene = PTStereoScene(device: device)
@@ -90,8 +84,10 @@ public final class PTStereoView: UIView {
         scene.stereoParameters = stereoParameters
         scene.leftOrientationNode = self.leftOrientationNode
         scene.rightOrientationNode = self.rightOrientationNode
-        scene.setPointOfView(leftStereoCameraNode.pointOfView(for: .left), for: .left)
-        scene.setPointOfView(rightStereoCameraNode.pointOfView(for: .right), for: .right)
+        let leftPOV = leftStereoCameraNode.pointOfView(for: .left)
+        let rightPOV = rightStereoCameraNode.pointOfView(for: .right)
+        scene.setPointOfView(leftPOV, for: .left)
+        scene.setPointOfView(rightPOV, for: .right)
         return scene
     }()
     
@@ -107,7 +103,6 @@ public final class PTStereoView: UIView {
             $0.isUserInteractionEnabled = false
             $0.isPlaying = true
             addSubview($0)
-            print($0.center)
         }
     }()
     
@@ -185,21 +180,18 @@ extension PTStereoView {
 extension PTStereoView {
     func initCursor() {
         addGestureRecognizer(tapGestureRecognizer)
-        leftTouchView.center = touchModel.leftCenter;
-        addSubview(leftTouchView)
-        rightTouchView.center = touchModel.rightCenter;
-        addSubview(rightTouchView)
-        hideTouch()
+        // Add 3D Touch
+        leftOrientationNode.setCursorView(view: touchView)
+        rightOrientationNode.setCursorView(view: touchView)
+        hideController()
     }
     
     func showTouch() {
-        leftTouchView.isHidden = false
-        rightTouchView.isHidden = false
+        touchView.isHidden = false
     }
     
     func hideTouch() {
-        leftTouchView.isHidden = true
-        rightTouchView.isHidden = true
+        touchView.isHidden = true
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
@@ -224,11 +216,10 @@ extension PTStereoView: SCNSceneRendererDelegate {
     func detection() {
         guard isControllerVisible else { return }
         DispatchQueue.main.async {
-            let sceneRenderer = self.stereoScene.leftSCNRenderer
-            let centerPoint = self.touchModel.cursor
-            let hits = sceneRenderer.hitTest(centerPoint, options: [.searchMode : 1])
-            guard hits.count > 0 else { return }
-            let hitResults = hits.filter({ $0.node.name != "Base Object" })
+            guard let physicsWorld = self.stereoScene.leftSCNRenderer.scene?.physicsWorld else { return }
+            guard let cursorBody = self.leftOrientationNode.cursorNode.physicsBody else { return }
+            let contacts = physicsWorld.contactTest(with: cursorBody, options: nil)
+            let hitResults = contacts.filter({ $0.nodeB.name != "Base Object" })
             guard !hitResults.isEmpty else {
                 self.currentFocused = nil
                 self.currentFocusTime = 0
@@ -236,7 +227,7 @@ extension PTStereoView: SCNSceneRendererDelegate {
                 return
             }
             hitResults.forEach { result in
-                guard let node = result.node as? PTRenderObject else { return }
+                guard let node = result.nodeB as? PTRenderObject else { return }
                 if node.canFocused && self.currentFocused != node {
                     // Change cursor
                     self.setFocusCursor()
@@ -251,7 +242,7 @@ extension PTStereoView: SCNSceneRendererDelegate {
                                 self.currentFocus = nil
                                 self.currentFocusTime = 0
                             case .slider(let duration):
-                                let position = result.localCoordinates.x
+                                let position = result.contactPoint.z
                                 var percent: Float = 0
                                 let start: Float = -0.22495809
                                 let end: Float = 0.22489665
@@ -282,44 +273,50 @@ extension PTStereoView: SCNSceneRendererDelegate {
     }
     
     func setNonFocusCursor() {
-        [leftTouchView, rightTouchView].forEach {
-            $0.subviews.forEach {
-                $0.removeFromSuperview()
+        DispatchQueue.main.async {
+            self.touchView.do {
+                $0.isOpaque = false
+                $0.subviews.forEach {
+                    $0.removeFromSuperview()
+                }
+                let focusView = UIView(frame: CGRect(x: 4, y: 4, width: 2, height: 2))
+                focusView.backgroundColor = .white
+                focusView.layer.cornerRadius = 1
+                $0.addSubview(focusView)
             }
-            let focusView = UIView(frame: CGRect(x: 4, y: 4, width: 2, height: 2))
-            focusView.backgroundColor = .white
-            focusView.layer.cornerRadius = 1
-            $0.addSubview(focusView)
-        }
-        renderController.forEach {
-            $0.childNodes.forEach { node in
-                guard let node = node as? PTRenderObject else { return }
-                node.unFocusAction?()
+            self.renderController.forEach {
+                $0.childNodes.forEach { node in
+                    guard let node = node as? PTRenderObject else { return }
+                    node.unFocusAction?()
+                }
             }
-        }
-        renderControllerForRightEye.forEach {
-            $0.childNodes.forEach { node in
-                guard let node = node as? PTRenderObject else { return }
-                node.unFocusAction?()
+            self.renderControllerForRightEye.forEach {
+                $0.childNodes.forEach { node in
+                    guard let node = node as? PTRenderObject else { return }
+                    node.unFocusAction?()
+                }
             }
-        }
-        if isControllerVisible {
-            unFocusControllerTime += 1
+            if self.isControllerVisible {
+                self.unFocusControllerTime += 1
+            }
         }
     }
     
     func setFocusCursor() {
-        [leftTouchView, rightTouchView].forEach {
-            $0.subviews.forEach {
-                $0.removeFromSuperview()
+        DispatchQueue.main.async {
+            self.touchView.do {
+                $0.isOpaque = false
+                $0.subviews.forEach {
+                    $0.removeFromSuperview()
+                }
+                let focusView = CircularProgressView(frame: $0.bounds)
+                focusView.progressColor = .white
+                focusView.trackColor = .clear
+                focusView.value = CGFloat(self.currentFocusTime / self.totalFocusTime)
+                $0.addSubview(focusView)
             }
-            let focusView = CircularProgressView(frame: $0.bounds)
-            focusView.progressColor = .white
-            focusView.trackColor = .clear
-            focusView.value = CGFloat(self.currentFocusTime / self.totalFocusTime)
-            $0.addSubview(focusView)
+            self.unFocusControllerTime = 0
         }
-        unFocusControllerTime = 0
     }
 }
 
@@ -328,11 +325,17 @@ extension PTStereoView {
     public func hideController() {
         hideTouch()
         isControllerVisible = false
+        [leftOrientationNode, rightOrientationNode].forEach {
+            $0?.cursorNode.isHidden = true
+        }
     }
     
     public func showController() {
         showTouch()
         isControllerVisible = true
+        [leftOrientationNode, rightOrientationNode].forEach {
+            $0?.cursorNode.isHidden = false
+        }
     }
 }
 
@@ -357,7 +360,7 @@ extension PTStereoView: PTOrientationDelegate {
                 hideController()
             }
         }
-
+        
         if !isControllerVisible {
             renderController.forEach { $0.opacity = 0 }
             renderControllerForRightEye.forEach { $0.opacity = 0 }

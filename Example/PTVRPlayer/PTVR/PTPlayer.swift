@@ -11,6 +11,10 @@ import AVFoundation
 import AVKit
 
 class PTPlayer: AVPlayer {
+    var isSeekInProgress = false
+    var chaseTime = CMTime.zero
+    var playerCurrentItemStatus: AVPlayerItem.Status = .unknown
+    
     override var rate: Float {
         set {
             super.rate = newValue
@@ -30,13 +34,16 @@ class PTPlayer: AVPlayer {
     @objc dynamic var isPlaying: Bool = false
     
     func seek(to time: TimeInterval, completion: @escaping (Bool) -> Void) {
-        var cmtime = CMTime(seconds: time, preferredTimescale: 33)
+        var cmtime = CMTime(seconds: time, preferredTimescale: 100)
         if let maxTime = currentItem?.duration.seconds, time > maxTime {
-            cmtime = CMTime(seconds: maxTime, preferredTimescale: 33)
+            cmtime = CMTime(seconds: maxTime, preferredTimescale: 100)
         }
-        seek(to: cmtime, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero, completionHandler: completion)
+        
+        DispatchQueue.main.async {
+            self.seek(to: cmtime, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero, completionHandler: completion)
+        }
     }
-
+    
     deinit {
         print(String(describing: type(of: self)) + " deinit")
     }

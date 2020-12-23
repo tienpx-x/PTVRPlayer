@@ -8,6 +8,10 @@ target 'PTVRPlayer_Example' do
   pod 'Then'
   pod 'NSObject+Rx'
   pod 'SnapKit'
+  pod 'QRCodeReader.swift'
+  pod 'FittedSheets'
+  pod 'FontAwesome.swift'
+  pod 'ObjectMapper'
   
   target 'PTVRPlayer_Tests' do
     inherit! :search_paths

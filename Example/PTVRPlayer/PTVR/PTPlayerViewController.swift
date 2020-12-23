@@ -29,6 +29,13 @@ final class PTPlayerViewController: UIViewController {
     // MARK: - Properties
     
     var player: PTPlayer?
+    var videos: ListVideo?
+    var currentIndex = 0
+    var currentVideo: Video? {
+        guard let videos = videos, videos.items.count > currentIndex else { return nil }
+        return videos.items[currentIndex]
+    }
+    
     var playerViews: [PTControlView] = []
     var playerBag = DisposeBag()
     var playerItemBag = DisposeBag()
@@ -80,6 +87,8 @@ final class PTPlayerViewController: UIViewController {
         vrControlView.do {
             $0.playerController = self
         }
+        
+        panoramaView.backgroundColor = .black
         
         addResetGesture()
         
@@ -166,10 +175,10 @@ final class PTPlayerViewController: UIViewController {
         guard let player = player else { return }
         addVideoPlayerController()
         
-        panoramaView.addControl(view: portraitControlView)
-        panoramaView.addControl(view: landscapeControlView)
-        
         panoramaView.load(player: player, format: .stereoSBS)
+        
+        panoramaView.scene?.leftMediaNode.addEffect(image: #imageLiteral(resourceName: "effect"))
+        panoramaView.scene?.rightMediaNode.addEffect(image: #imageLiteral(resourceName: "effect"))
         
         tracking(player: player)
         
@@ -178,20 +187,21 @@ final class PTPlayerViewController: UIViewController {
             $0.duration = player.duration
             $0.process = player.currentTime().seconds
         }
-        
-        play()
-        
-        panoramaView.setNeedsResetRotation(animated: false)
         setPanoramaMode()
+        panoramaView.setNeedsResetRotation(animated: false)
+        play()
     }
     
     func tracking(player: PTPlayer) {
         playerBag = DisposeBag()
-        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 33, timescale: 1000),
-                                                      queue: nil) { [weak self] (time) in
+        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 100, timescale: 1000),
+                                                      queue: DispatchQueue.main) { [weak self] (time) in
                                                         self?.playerViews.forEach {
                                                             $0.duration = self?.player?.duration ?? 0
                                                             $0.process = time.seconds
+                                                            if time.seconds > 0 {
+                                                                $0.isLoading = false
+                                                            }
                                                             DispatchQueue.main.async {
                                                                 self?.vrControl?.progressSlider.maximumValue = Float(self?.player?.duration ?? 0)
                                                                 self?.vrControl?.progressNode.type = .slider(self?.player?.duration ?? 0)
@@ -282,7 +292,7 @@ extension PTPlayerViewController {
                 switch value {
                 case .readyToPlay:
                     self.playerViews.forEach {
-                        $0.isLoading = false
+                        // $0.isLoading = false
                         $0.duration = self.player?.duration ?? 0
                     }
                     break
@@ -301,9 +311,9 @@ extension PTPlayerViewController {
         playerItem.rx.observe(Bool.self, #keyPath(AVPlayerItem.isPlaybackBufferEmpty))
             .compactMap { $0 }
             .subscribe(onNext: { [unowned self] (value) in
-                self.playerViews.forEach {
-                    $0.isLoading = value
-                }
+//                self.playerViews.forEach {
+//                    $0.isLoading = value
+//                }
             })
             .disposed(by: playerItemBag)
         
@@ -321,23 +331,30 @@ extension PTPlayerViewController {
         playerItem.rx.observe(Bool.self, #keyPath(AVPlayerItem.isPlaybackLikelyToKeepUp))
             .compactMap { $0 }
             .subscribe(onNext: { [unowned self] (value) in
-                if value == true {
-                    self.playerViews.forEach {
-                        $0.isLoading = false
-                    }
-                }
+//                if value == true {
+//                    self.playerViews.forEach {
+//                        $0.isLoading = false
+//                    }
+//                }
             })
             .disposed(by: playerItemBag)
     }
 }
 
 extension PTPlayerViewController: PTPlayerControler {
+    func changeModel(_ model: ViewerParametersProtocol) {
+        guard let stereoView = stereoView else { return }
+        stereoView.stereoScene.changeViewerModel(model)
+    }
+    
     func close() {
         // Custom
-        UIApplication.shared.delegate?.window??.tag = 0
-        setPortrait()
-        Util.disableDeviceGoSleep()
-        self.dismiss(animated: true, completion: nil)
+        DispatchQueue.main.async {
+            UIApplication.shared.delegate?.window??.tag = 0
+            self.setPortrait()
+            Util.disableDeviceGoSleep()
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     func togglePlayPause() {
@@ -387,6 +404,9 @@ extension PTPlayerViewController: PTPlayerControler {
         let currentTime = player.currentTime().seconds
         let forwardTime = currentTime + second
         seek(to: forwardTime, completion: nil)
+        playerViews.forEach {
+            $0.process = forwardTime
+        }
     }
     
     func backward(second: TimeInterval) {
@@ -394,31 +414,32 @@ extension PTPlayerViewController: PTPlayerControler {
         let currentTime = player.currentTime().seconds
         let backwardTime = currentTime - second
         seek(to: backwardTime, completion: nil)
+        playerViews.forEach {
+            $0.process = backwardTime
+        }
     }
     
     func enterVRMode() {
         isStartingVRMode = true
         // Custom
         UIApplication.shared.delegate?.window??.tag = 999
+        setStereoMode()
         setLandscape()
         let vc = UIViewController();
-        PTStereoView(device: self.panoramaView.device).do {
+        stereoView = PTStereoView(device: panoramaView.device).then {
             // Controller
             let vrControl = PTVRStereoControl()
             vrControl.controller = self
             self.vrControl = vrControl
             $0.renderController.append(vrControl.opacityNode)
             $0.renderController.append(vrControl.playerNode)
-            //
-            $0.scene = self.panoramaView.scene
             $0.frame = vc.view.frame
-            self.vrControlView.frame = vc.view.frame
+            $0.scene = panoramaView.scene
+            vrControlView.frame = vc.view.frame
             vc.view.addSubview($0)
-            vc.view.insertSubview(self.vrControlView, aboveSubview: $0)
-            self.stereoView = $0
+            vc.view.insertSubview(vrControlView, aboveSubview: $0)
         }
-        self.navigationController?.pushViewController(vc, animated: false)
-        setStereoMode()
+        navigationController?.pushViewController(vc, animated: false)
         panoramaView.isHidden = true
         isStartingVRMode = false
     }
@@ -431,7 +452,13 @@ extension PTPlayerViewController: PTPlayerControler {
         stereoView?.removeFromSuperview()
         panoramaView.isHidden = false
         self.stereoView = nil
+        self.vrControl = nil
         self.handleOrientation(UIDeviceOrientation.landscapeRight)
+        UIApplication.shared.windows.forEach { window in
+            if NSStringFromClass(type(of: window)) == "_SCNSnapshotWindow" {
+                window.isHidden = true
+            }
+        }
     }
 }
 
@@ -447,10 +474,9 @@ extension PTPlayerViewController {
         default:
             message = error.localizedDescription
         }
-        //        self.showAlert(message: message, completion: {
-        //            self.dismiss(animated: true, completion: nil)
-        //        })
-        self.dismiss(animated: true, completion: nil)
+        self.showAlert(message: message, completion: {
+            self.dismiss(animated: true, completion: nil)
+        })
     }
 }
 
@@ -491,7 +517,6 @@ extension PTPlayerViewController {
         panoramaView.scene?.rightMediaNode.eulerAngles = SCNVector3Make(0, Util.deg2rad(-180), 0)
     }
 }
-
 
 // MARK: - StoryboardSceneBased
 extension PTPlayerViewController: StoryboardSceneBased {

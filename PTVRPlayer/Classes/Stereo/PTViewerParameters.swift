@@ -6,23 +6,27 @@
 //
 
 public protocol ViewerParametersProtocol {
+    var name: String { get }
     var lenses: Lenses { get }
     var distortion: Distortion { get }
     var maximumFieldOfView: FieldOfView { get }
 }
 
 public struct ViewerParameters: ViewerParametersProtocol {
+    public var name: String
     public var lenses: Lenses
     public var distortion: Distortion
     public var maximumFieldOfView: FieldOfView
 
-    public init(lenses: Lenses, distortion: Distortion, maximumFieldOfView: FieldOfView) {
+    public init(name: String, lenses: Lenses, distortion: Distortion, maximumFieldOfView: FieldOfView) {
+        self.name = name
         self.lenses = lenses
         self.distortion = distortion
         self.maximumFieldOfView = maximumFieldOfView
     }
 
     public init(_ parameters: ViewerParametersProtocol) {
+        self.name = parameters.name
         self.lenses = parameters.lenses
         self.distortion = parameters.distortion
         self.maximumFieldOfView = parameters.maximumFieldOfView
@@ -31,9 +35,9 @@ public struct ViewerParameters: ViewerParametersProtocol {
 
 public struct Lenses {
     public enum Alignment: Int {
-        case top = -1
-        case center = 0
-        case bottom = 1
+        case bottom = 0
+        case center = 1
+        case top = 2
     }
 
     public let separation: Float

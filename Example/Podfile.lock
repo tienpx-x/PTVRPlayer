@@ -1,8 +1,15 @@
 PODS:
+  - FittedSheets (1.4.6)
+  - FontAwesome.swift (1.9.1)
   - "NSObject+Rx (5.1.0)":
     - RxSwift (~> 5.1)
+  - ObjectMapper (4.2.0)
   - PTVRPlayer (1.0.0):
+    - Result
+    - SwiftProtobuf
     - Then
+  - QRCodeReader.swift (10.1.0)
+  - Result (5.0.0)
   - Reusable (4.1.1):
     - Reusable/Storyboard (= 4.1.1)
     - Reusable/View (= 4.1.1)
@@ -15,11 +22,16 @@ PODS:
     - RxSwift (~> 5)
   - RxSwift (5.1.1)
   - SnapKit (5.0.1)
+  - SwiftProtobuf (1.14.0)
   - Then (2.7.0)
 
 DEPENDENCIES:
+  - FittedSheets
+  - FontAwesome.swift
   - "NSObject+Rx"
+  - ObjectMapper
   - PTVRPlayer (from `../`)
+  - QRCodeReader.swift
   - Reusable
   - RxCocoa
   - RxSwift
@@ -28,12 +40,18 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - FittedSheets
+    - FontAwesome.swift
     - "NSObject+Rx"
+    - ObjectMapper
+    - QRCodeReader.swift
+    - Result
     - Reusable
     - RxCocoa
     - RxRelay
     - RxSwift
     - SnapKit
+    - SwiftProtobuf
     - Then
 
 EXTERNAL SOURCES:
@@ -41,15 +59,21 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
+  FittedSheets: 7f37fee2567d15dcde391f31eccbffb660ddebf0
+  FontAwesome.swift: 6b52cb7be66eacd28cbfaa0ca7ffd0de4a186a1d
   "NSObject+Rx": fa6bbcc1ab1faa06b01466bc09b1e0692bbc5946
-  PTVRPlayer: b3d30254e02bb88f1e9ea119e5ca12e2e1857c8a
+  ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
+  PTVRPlayer: 74448fa6ce28de6e4fc2904251166811c1ead968
+  QRCodeReader.swift: 373a389fe9a22d513c879a32a6f647c58f4ef572
+  Result: ed341d2f236af425b803e690e9bd8fd0a0cb7c5a
   Reusable: 53a9acf5c536f229b31b5865782414b508252ddb
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
   RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  SwiftProtobuf: ed465ed18402f998fd117f631da27e0168e6b59c
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: e0541dcd5ec25126ef4a422d357b35deac2f5925
+PODFILE CHECKSUM: daac4199b22c8c8dd43d7ba85d755608501ed6c4
 
 COCOAPODS: 1.9.3

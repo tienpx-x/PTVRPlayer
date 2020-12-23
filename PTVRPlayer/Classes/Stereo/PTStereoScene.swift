@@ -115,6 +115,11 @@ public class PTStereoScene: SCNScene {
 
 // MARK: - Mesh
 extension PTStereoScene {
+    public func changeViewerModel(_ param: ViewerParametersProtocol) {
+        stereoParameters = StereoParameters(screen: PTScreenModel(),
+                                            viewer: param)
+    }
+    
     func attachTextureToMesh() {
         meshNode.geometry?.firstMaterial?.diffuse.contents = stereoTexture
     }

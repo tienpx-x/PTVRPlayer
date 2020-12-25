@@ -15,6 +15,9 @@ PODS:
     - Reusable/View (= 4.1.1)
   - Reusable/Storyboard (4.1.1)
   - Reusable/View (4.1.1)
+  - RxAppState (1.6.0):
+    - RxCocoa (~> 5.0)
+    - RxSwift (~> 5.0)
   - RxCocoa (5.1.1):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
@@ -33,6 +36,7 @@ DEPENDENCIES:
   - PTVRPlayer (from `../`)
   - QRCodeReader.swift
   - Reusable
+  - RxAppState
   - RxCocoa
   - RxSwift
   - SnapKit
@@ -47,6 +51,7 @@ SPEC REPOS:
     - QRCodeReader.swift
     - Result
     - Reusable
+    - RxAppState
     - RxCocoa
     - RxRelay
     - RxSwift
@@ -67,6 +72,7 @@ SPEC CHECKSUMS:
   QRCodeReader.swift: 373a389fe9a22d513c879a32a6f647c58f4ef572
   Result: ed341d2f236af425b803e690e9bd8fd0a0cb7c5a
   Reusable: 53a9acf5c536f229b31b5865782414b508252ddb
+  RxAppState: b633d7370970ecb80081912ea08a7bf3eb644b4e
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
   RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
@@ -74,6 +80,6 @@ SPEC CHECKSUMS:
   SwiftProtobuf: ed465ed18402f998fd117f631da27e0168e6b59c
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: daac4199b22c8c8dd43d7ba85d755608501ed6c4
+PODFILE CHECKSUM: 3aec75f84f625986fd6ca39766aa02da7cd9425c
 
 COCOAPODS: 1.9.3

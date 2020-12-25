@@ -4,6 +4,7 @@ target 'PTVRPlayer_Example' do
   pod 'PTVRPlayer', :path => '../'
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod "RxAppState"
   pod 'Reusable'
   pod 'Then'
   pod 'NSObject+Rx'

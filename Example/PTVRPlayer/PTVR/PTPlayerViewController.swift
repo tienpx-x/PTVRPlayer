@@ -11,6 +11,7 @@ import AVKit
 import SceneKit
 import PTVRPlayer
 import SnapKit
+import RxAppState
 
 enum ViewOrientation {
     case unknown
@@ -88,11 +89,11 @@ final class PTPlayerViewController: UIViewController {
             $0.playerController = self
         }
         
-        panoramaView.backgroundColor = .black
-        
         addResetGesture()
-        
         playerViews = [portraitControlView, landscapeControlView]
+        
+        configPanorama()
+        
         configure(player: player)
         
         UIDevice.current.rx.orientationChanged
@@ -101,6 +102,32 @@ final class PTPlayerViewController: UIViewController {
             .distinctUntilChanged()
             .subscribe(onNext: { [unowned self] (value) in
                 self.handleOrientation(value)
+            })
+            .disposed(by: rx.disposeBag)
+        
+        UIApplication.shared.rx.applicationWillEnterForeground
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: {  [unowned self] _ in
+                panoramaView.scene?.isPaused = false
+                panoramaView.startRender()
+                //                if let stereoView = stereoView {
+                //                    let vrControl = PTVRStereoControl()
+                //                    vrControl.controller = self
+                //                    self.vrControl = vrControl
+                //                    stereoView.removeControllerObject()
+                //                    stereoView.renderController.append(vrControl.opacityNode)
+                //                    stereoView.renderController.append(vrControl.playerNode)
+                //                    stereoView.resetController()
+                //                }
+            })
+            .disposed(by: rx.disposeBag)
+        
+        UIApplication.shared.rx.applicationDidEnterBackground
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: {  [unowned self] _ in
+                panoramaView.scene?.isPaused = true
+                panoramaView.stopRender()
+                self.endVRMode()
             })
             .disposed(by: rx.disposeBag)
     }
@@ -171,14 +198,19 @@ final class PTPlayerViewController: UIViewController {
         panoramaView.layoutIfNeeded()
     }
     
+    func configPanorama() {
+        panoramaView.backgroundColor = .black
+        addVideoPlayerController()
+    }
+    
     func configure(player: PTPlayer?) {
         guard let player = player else { return }
-        addVideoPlayerController()
+        configStepButton()
         
         panoramaView.load(player: player, format: .stereoSBS)
         
-        panoramaView.scene?.leftMediaNode.addEffect(image: #imageLiteral(resourceName: "effect"))
-        panoramaView.scene?.rightMediaNode.addEffect(image: #imageLiteral(resourceName: "effect"))
+//        panoramaView.scene?.leftMediaNode.addEffect(image: #imageLiteral(resourceName: "effect"))
+//        panoramaView.scene?.rightMediaNode.addEffect(image: #imageLiteral(resourceName: "effect"))
         
         tracking(player: player)
         
@@ -196,21 +228,23 @@ final class PTPlayerViewController: UIViewController {
         playerBag = DisposeBag()
         timeObserver = player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 100, timescale: 1000),
                                                       queue: DispatchQueue.main) { [weak self] (time) in
-                                                        self?.playerViews.forEach {
-                                                            $0.duration = self?.player?.duration ?? 0
-                                                            $0.process = time.seconds
-                                                            if time.seconds > 0 {
-                                                                $0.isLoading = false
-                                                            }
-                                                            DispatchQueue.main.async {
-                                                                self?.vrControl?.progressSlider.maximumValue = Float(self?.player?.duration ?? 0)
-                                                                self?.vrControl?.progressNode.type = .slider(self?.player?.duration ?? 0)
-                                                                self?.vrControl?.progressSlider.value = Float(time.seconds)
-                                                                self?.vrControl?.leftTimeLabel.second = time.seconds
-                                                                self?.vrControl?.rightTimeLabel.second = self?.player?.duration ?? 0
-                                                            }
-                                                        }
-                                                        
+            guard let self = self else { return }
+            let duration = self.player?.duration ?? 0
+            self.playerViews.forEach {
+                $0.duration = duration
+                $0.process = time.seconds
+                if time.seconds > 0 {
+                    $0.isLoading = false
+                }
+            }
+            guard let vrControl = self.vrControl else { return }
+            DispatchQueue.main.async {
+                vrControl.progressSlider.maximumValue = Float(self.player?.duration ?? 0)
+                vrControl.progressNode.type = .slider(self.player?.duration ?? 0)
+                vrControl.progressSlider.value = Float(time.seconds)
+                vrControl.leftTimeLabel.second = time.seconds
+                vrControl.rightTimeLabel.second = duration
+            }
         }
         player.rx.observe(Bool.self, #keyPath(PTPlayer.isPlaying))
             .observeOn(MainScheduler.instance)
@@ -220,8 +254,8 @@ final class PTPlayerViewController: UIViewController {
                     $0.isPlaying = value
                 }
                 DispatchQueue.main.async {
-                    let playImage = UIImage(named: "ic_vr_play")
-                    let pauseImage =  UIImage(named: "ic_vr_pause")
+                    let playImage = UIImage(named: "ic_vr_play")?.resize(width: 10)
+                    let pauseImage =  UIImage(named: "ic_vr_pause")?.resize(width: 10)
                     self?.vrControl?.playButton.setImage(value ? pauseImage : playImage, for: .normal)
                 }
             })
@@ -250,6 +284,10 @@ final class PTPlayerViewController: UIViewController {
                     return
                 }
                 self.addObserver(playerItem: item)
+                if let player = self.player {
+                    self.panoramaView.scene?.bind(player)
+                    player.play()
+                }
             })
             .disposed(by: playerBag)
     }
@@ -291,9 +329,10 @@ extension PTPlayerViewController {
             .subscribe(onNext: { [unowned self] (value) in
                 switch value {
                 case .readyToPlay:
+                    let duration = self.player?.duration ?? 0
                     self.playerViews.forEach {
                         // $0.isLoading = false
-                        $0.duration = self.player?.duration ?? 0
+                        $0.duration = duration
                     }
                     break
                 case .failed:
@@ -311,9 +350,9 @@ extension PTPlayerViewController {
         playerItem.rx.observe(Bool.self, #keyPath(AVPlayerItem.isPlaybackBufferEmpty))
             .compactMap { $0 }
             .subscribe(onNext: { [unowned self] (value) in
-//                self.playerViews.forEach {
-//                    $0.isLoading = value
-//                }
+                //                self.playerViews.forEach {
+                //                    $0.isLoading = value
+                //                }
             })
             .disposed(by: playerItemBag)
         
@@ -331,13 +370,31 @@ extension PTPlayerViewController {
         playerItem.rx.observe(Bool.self, #keyPath(AVPlayerItem.isPlaybackLikelyToKeepUp))
             .compactMap { $0 }
             .subscribe(onNext: { [unowned self] (value) in
-//                if value == true {
-//                    self.playerViews.forEach {
-//                        $0.isLoading = false
-//                    }
-//                }
+                //                if value == true {
+                //                    self.playerViews.forEach {
+                //                        $0.isLoading = false
+                //                    }
+                //                }
             })
             .disposed(by: playerItemBag)
+    }
+}
+
+extension PTPlayerViewController {
+    func configStepButton() {
+        guard let videos = videos?.items else { return }
+        guard let currentVideo = currentVideo else { return }
+        let next = videos.next(item: currentVideo)
+        let prev = videos.prev(item: currentVideo)
+        playerViews.forEach {
+            $0.canStepFoward = next != nil
+            $0.canStepBackward = prev != nil
+        }
+        if isInVRMode {
+            vrControl?.titleLabel.text = currentVideo.title
+            vrControl?.canStepFoward = next != nil
+            vrControl?.canStepBackward = prev != nil
+        }
     }
 }
 
@@ -419,7 +476,32 @@ extension PTPlayerViewController: PTPlayerControler {
         }
     }
     
+    func stepForward() {
+        guard let player = player, let videos = videos?.items, let currentVideo = currentVideo else { return }
+        guard let next = videos.next(item: currentVideo), let url = URL(string: next.url) else { return }
+        player.pause()
+        if let player = self.player {
+            self.panoramaView.scene?.unbind(player)
+        }
+        player.replaceCurrentItem(with: AVPlayerItem(url: url))
+        currentIndex += 1
+        configStepButton()
+    }
+    
+    func stepBackward() {
+        guard let player = player, let videos = videos?.items, let currentVideo = currentVideo else { return }
+        guard let prev = videos.prev(item: currentVideo), let url = URL(string: prev.url) else { return }
+        player.pause()
+        if let player = self.player {
+            self.panoramaView.scene?.unbind(player)
+        }
+        player.replaceCurrentItem(with: AVPlayerItem(url: url))
+        currentIndex -= 1
+        configStepButton()
+    }
+    
     func enterVRMode() {
+        guard let _ = videos else { return }
         isStartingVRMode = true
         // Custom
         UIApplication.shared.delegate?.window??.tag = 999
@@ -431,6 +513,10 @@ extension PTPlayerViewController: PTPlayerControler {
             let vrControl = PTVRStereoControl()
             vrControl.controller = self
             self.vrControl = vrControl
+            if let playerView = playerViews.first {
+                vrControl.canStepFoward = playerView.canStepFoward
+                vrControl.canStepBackward = playerView.canStepBackward
+            }
             $0.renderController.append(vrControl.opacityNode)
             $0.renderController.append(vrControl.playerNode)
             $0.frame = vc.view.frame
@@ -441,16 +527,19 @@ extension PTPlayerViewController: PTPlayerControler {
         }
         navigationController?.pushViewController(vc, animated: false)
         panoramaView.isHidden = true
+        panoramaView.scnView.isPlaying = false
         isStartingVRMode = false
     }
     
     func endVRMode() {
         // Custom
+        guard let stereoView = stereoView else { return }
         setPanoramaMode()
         UIApplication.shared.delegate?.window??.tag = 99
         navigationController?.popViewController(animated: false)
-        stereoView?.removeFromSuperview()
+        stereoView.removeFromSuperview()
         panoramaView.isHidden = false
+        panoramaView.scnView.isPlaying = true
         self.stereoView = nil
         self.vrControl = nil
         self.handleOrientation(UIDeviceOrientation.landscapeRight)

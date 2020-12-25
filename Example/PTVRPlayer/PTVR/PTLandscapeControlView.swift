@@ -20,6 +20,10 @@ class PTLandscapeControlView: UIView, NibOwnerLoadable, PTControlView {
     @IBOutlet weak var next30sButton: UIButton!
     @IBOutlet weak var focusButton: UIButton!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
+    @IBOutlet weak var stepForwardButton: UIButton!
+    @IBOutlet weak var stepBackwardButton: UIButton!
+    @IBOutlet weak var stepForwardHeight: NSLayoutConstraint!
+    @IBOutlet weak var stepBackwardHeight: NSLayoutConstraint!
     
     // MARK: - Properties
     weak var playerController: PTPlayerControler?
@@ -56,6 +60,18 @@ class PTLandscapeControlView: UIView, NibOwnerLoadable, PTControlView {
         didSet {
             handleProcess(process)
             updateControllersState()
+        }
+    }
+    
+    var canStepFoward: Bool = false {
+        didSet {
+            stepForwardHeight.constant = canStepFoward ? 30 : 0
+        }
+    }
+    
+    var canStepBackward: Bool = false {
+        didSet {
+            stepBackwardHeight.constant = canStepBackward ? 30 : 0
         }
     }
     
@@ -171,6 +187,18 @@ class PTLandscapeControlView: UIView, NibOwnerLoadable, PTControlView {
                 self.process = TimeInterval(value)
             })
             .drive()
+            .disposed(by: rx.disposeBag)
+        
+        stepForwardButton.rx.tap.asDriver()
+            .drive(onNext: { [unowned self] in
+                self.playerController?.stepForward()
+            })
+            .disposed(by: rx.disposeBag)
+        
+        stepBackwardButton.rx.tap.asDriver()
+            .drive(onNext: { [unowned self] in
+                self.playerController?.stepBackward()
+            })
             .disposed(by: rx.disposeBag)
     }
     

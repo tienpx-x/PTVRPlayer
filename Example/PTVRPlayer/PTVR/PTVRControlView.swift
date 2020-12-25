@@ -60,6 +60,10 @@ class PTVRControlView: UIView, NibOwnerLoadable, PTControlView, QRCodeReaderView
             
         }
     }
+    
+    var canStepFoward: Bool = false
+    var canStepBackward: Bool = false
+    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -84,6 +88,8 @@ class PTVRControlView: UIView, NibOwnerLoadable, PTControlView, QRCodeReaderView
                                                        textColor: .white,
                                                        size: CGSize(width: 26, height: 26)),
                                for: .normal)
+        // TODO: Hide at the moment
+        settingButton.isHidden = true
     }
     
     func binding() {
@@ -94,12 +100,13 @@ class PTVRControlView: UIView, NibOwnerLoadable, PTControlView, QRCodeReaderView
             })
             .disposed(by: rx.disposeBag)
         
-        settingButton.rx.tap.asDriver()
-            .throttle(.milliseconds(500))
-            .drive(onNext: { [unowned self] in
-                self.openSettingSheet()
-            })
-            .disposed(by: rx.disposeBag)
+        // TODO: Hide at the moment
+//        settingButton.rx.tap.asDriver()
+//            .throttle(.milliseconds(500))
+//            .drive(onNext: { [unowned self] in
+//                self.openSettingSheet()
+//            })
+//            .disposed(by: rx.disposeBag)
     }
     
     @objc func showControlView() {

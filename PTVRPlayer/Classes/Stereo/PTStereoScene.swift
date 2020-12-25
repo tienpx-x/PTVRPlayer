@@ -203,14 +203,13 @@ extension PTStereoScene {
             
             let texture = configuration.texture
             let viewport = CGRect(x: 0, y: 0, width: texture.width, height: texture.height)
-            print("[LOG] VIEWPORT: \(viewport)")
             
             let passDescriptor = MTLRenderPassDescriptor()
             passDescriptor.colorAttachments[0].texture = texture
             passDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0, 0, 0, 1)
             passDescriptor.colorAttachments[0].storeAction = .store
             passDescriptor.colorAttachments[0].loadAction = .clear
-                        
+            
             switch eye {
             case .left:
                 leftSCNRenderer.render(atTime: time,

@@ -75,7 +75,6 @@ public final class PTStereoView: UIView {
     
     public let stereoTexture: MTLTexture
     public let device: MTLDevice
-    
     public var stereoParameters = StereoParameters(screen: PTScreenModel(), viewer: PTViewerModel.cardboardMay2015)
     
     public lazy var stereoScene: PTStereoScene = {
@@ -162,7 +161,7 @@ public final class PTStereoView: UIView {
 
 // MARK: Render List
 extension PTStereoView {
-    func renderControllerObject() {
+    public func renderControllerObject() {
         guard let scene = scene else { return }
         renderController.forEach {
             scene.leftMediaNode.addChildNode($0)
@@ -173,6 +172,21 @@ extension PTStereoView {
         hideController()
         leftOrientationNode.delegate = self
         rightOrientationNode.delegate = self
+    }
+    
+    public func removeControllerObject() {
+        renderController.forEach {
+            $0.removeFromParentNode()
+        }
+        renderControllerForRightEye.forEach {
+            $0.removeFromParentNode()
+        }
+    }
+    
+    public func resetController() {
+        renderControllerObject()
+        touchView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        initCursor()
     }
 }
 
@@ -226,49 +240,55 @@ extension PTStereoView: SCNSceneRendererDelegate {
                 self.setNonFocusCursor()
                 return
             }
-            hitResults.forEach { result in
-                guard let node = result.nodeB as? PTRenderObject else { return }
-                if node.canFocused && self.currentFocused != node {
-                    // Change cursor
-                    self.setFocusCursor()
-                    node.focusAction?()
-                    // Action
-                    if self.currentFocus == node {
-                        if self.currentFocusTime == self.totalFocusTime {
-                            switch node.type {
-                            case .button:
-                                node.action?(nil)
-                                self.currentFocused = node
-                                self.currentFocus = nil
-                                self.currentFocusTime = 0
-                            case .slider(let duration):
-                                let position = result.contactPoint.z
-                                var percent: Float = 0
-                                let start: Float = -0.22495809
-                                let end: Float = 0.22489665
-                                if(position == 0) {
-                                    percent = 50
-                                } else if(position > 0 ) {
-                                    percent = (position / end) * 50 + 50
-                                } else  if(position < 0 ) {
-                                    percent = 50 - (position / start) * 50
-                                }
-                                let seekTime: TimeInterval = (duration / 100) * Double(percent)
-                                node.action?(seekTime)
-                                self.currentFocused = node
-                                self.currentFocus = nil
-                                self.currentFocusTime = 0
-                            }
-                        }
-                        self.currentFocusTime += 1
-                    } else {
-                        self.currentFocus = node
+            self.handleContact(result: hitResults[0])
+        }
+    }
+    
+    func handleContact(result: SCNPhysicsContact) {
+        guard let scene = scene else { return }
+        guard let node = result.nodeB as? PTRenderObject else { return }
+        if node.canFocused && self.currentFocused != node {
+            print("[XXX] \(scene.rootNode.convertPosition(result.contactPoint, to: node))")
+            // Change cursor
+            self.setFocusCursor()
+            node.focusAction?()
+            // Action
+            if self.currentFocus == node {
+                if self.currentFocusTime == self.totalFocusTime {
+                    switch node.type {
+                    case .button:
+                        node.action?(nil)
+                        self.currentFocused = node
+                        self.currentFocus = nil
                         self.currentFocusTime = 0
+                    case .slider(let duration):
+                        let position = scene.rootNode.convertPosition(result.contactPoint, to: node).x
+                        var percent: Float = 0
+                        let start: Float = -0.24
+                        let end: Float = 0.24
+                        if(position == 0) {
+                            percent = 50
+                        } else if(position > 0 ) {
+                            percent = (position / end) * 50 + 50
+                        } else  if(position < 0 ) {
+                            percent = 50 - (position / start) * 50
+                        }
+                        let seekTime: TimeInterval = (duration / 100) * Double(percent)
+                        node.action?(seekTime)
+                        self.currentFocused = node
+                        self.currentFocus = nil
+                        self.currentFocusTime = 0
+                    default:
+                        break
                     }
-                } else {
-                    self.setNonFocusCursor()
                 }
+                self.currentFocusTime += 1
+            } else {
+                self.currentFocus = node
+                self.currentFocusTime = 0
             }
+        } else {
+            self.setNonFocusCursor()
         }
     }
     

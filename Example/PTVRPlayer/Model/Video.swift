@@ -7,7 +7,7 @@
 
 import ObjectMapper
 
-struct Video {
+struct Video: Equatable {
     var id = 0
     var title = ""
     var duration = ""
@@ -31,6 +31,7 @@ extension Video: Mappable {
 
 struct ListVideo {
     var items: [Video] = []
+    var currentIndex: Int = 0
 }
 
 extension ListVideo: Then { }
@@ -42,5 +43,6 @@ extension ListVideo: Mappable {
     
     mutating func mapping(map: Map) {
         items <- map["video_data"]
+        currentIndex <- map["current_index"]
     }
 }

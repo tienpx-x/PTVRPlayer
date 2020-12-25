@@ -17,6 +17,8 @@ protocol PTPlayerControler: UIViewController {
     func seek(to: TimeInterval, completion: ((Bool) -> Void)?)
     func forward(second: TimeInterval)
     func backward(second: TimeInterval)
+    func stepForward()
+    func stepBackward()
     func focus(_ animated: Bool)
     func changeModel(_ model: ViewerParametersProtocol)
 }

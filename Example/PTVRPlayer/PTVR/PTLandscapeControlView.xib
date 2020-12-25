@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PTLandscapeControlView" customModule="Runner" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PTLandscapeControlView" customModule="PTVRPlayer_Example" customModuleProvider="target">
             <connections>
                 <outlet property="back30sButton" destination="dz5-BO-Vx7" id="Xvx-Wc-bMJ"/>
                 <outlet property="closeButton" destination="6ta-Gv-kLU" id="mQ1-q7-s1g"/>
@@ -20,6 +20,10 @@
                 <outlet property="playPauseButton" destination="UgO-dh-QV4" id="OKb-3Z-1OZ"/>
                 <outlet property="rightTimeLabel" destination="1oT-yq-90W" id="dmr-CY-mdq"/>
                 <outlet property="seekSlider" destination="hSk-36-GSy" id="mO0-bg-1W1"/>
+                <outlet property="stepBackwardButton" destination="QNu-vn-cEq" id="6vG-bh-kBz"/>
+                <outlet property="stepBackwardHeight" destination="uGL-m6-oJI" id="o9d-60-7PT"/>
+                <outlet property="stepForwardButton" destination="brN-HN-8gt" id="Zz9-Yp-97K"/>
+                <outlet property="stepForwardHeight" destination="xKY-2O-0i4" id="r3t-DR-tZZ"/>
                 <outlet property="vrButton" destination="cNq-U5-Et0" id="udD-zj-g3j"/>
             </connections>
         </placeholder>
@@ -37,7 +41,7 @@
                     <rect key="frame" x="22.5" y="356" width="851" height="48"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UgO-dh-QV4">
-                            <rect key="frame" x="44" y="10" width="28" height="28"/>
+                            <rect key="frame" x="74" y="10" width="28" height="28"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="28" id="LF7-d7-8I2"/>
                                 <constraint firstAttribute="width" secondItem="UgO-dh-QV4" secondAttribute="height" multiplier="1:1" id="eRN-DU-2aE"/>
@@ -46,7 +50,7 @@
                             <state key="normal" image="ic_play"/>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dz5-BO-Vx7">
-                            <rect key="frame" x="14" y="9" width="30" height="30"/>
+                            <rect key="frame" x="44" y="9" width="30" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="dz5-BO-Vx7" secondAttribute="height" multiplier="1:1" id="cHL-5f-eyb"/>
                                 <constraint firstAttribute="height" constant="30" id="r8j-KX-gTx"/>
@@ -55,7 +59,7 @@
                             <state key="normal" image="ic_prev"/>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TEq-1h-8vX">
-                            <rect key="frame" x="72" y="9" width="30" height="30"/>
+                            <rect key="frame" x="102" y="9" width="30" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="Kds-5s-dgC"/>
                                 <constraint firstAttribute="width" secondItem="TEq-1h-8vX" secondAttribute="height" multiplier="1:1" id="koe-fx-fbS"/>
@@ -64,15 +68,15 @@
                             <state key="normal" image="ic_next"/>
                         </button>
                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="hSk-36-GSy">
-                            <rect key="frame" x="152" y="9" width="578" height="31"/>
+                            <rect key="frame" x="214" y="9" width="516" height="31"/>
                         </slider>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vVh-B2-dSc" customClass="TimeLabel" customModule="Runner" customModuleProvider="target">
-                            <rect key="frame" x="112" y="16.5" width="34" height="15"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vVh-B2-dSc" customClass="TimeLabel" customModule="PTVRPlayer_Example" customModuleProvider="target">
+                            <rect key="frame" x="172" y="16.5" width="34" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.78039215689999997" green="0.79215686269999996" blue="0.81960784310000001" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1oT-yq-90W" customClass="TimeLabel" customModule="Runner" customModuleProvider="target">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1oT-yq-90W" customClass="TimeLabel" customModule="PTVRPlayer_Example" customModuleProvider="target">
                             <rect key="frame" x="736" y="16.5" width="34" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.78039215689999997" green="0.79215686269999996" blue="0.81960784310000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -94,32 +98,51 @@
                             <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                             <state key="normal" image="vr_mode"/>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="brN-HN-8gt" userLabel="Next">
+                            <rect key="frame" x="132" y="9" width="30" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="brN-HN-8gt" secondAttribute="height" multiplier="1:1" id="9Kx-rL-ud4"/>
+                                <constraint firstAttribute="height" constant="30" id="xKY-2O-0i4"/>
+                            </constraints>
+                            <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                            <state key="normal" image="ic_vr_step_forward"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QNu-vn-cEq" userLabel="Back">
+                            <rect key="frame" x="14" y="9" width="30" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="uGL-m6-oJI"/>
+                            </constraints>
+                            <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                            <state key="normal" image="ic_vr_step_backward"/>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.1803921568627451" green="0.19215686274509802" blue="0.2196078431372549" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstItem="TEq-1h-8vX" firstAttribute="width" secondItem="TEq-1h-8vX" secondAttribute="height" multiplier="1:1" id="8eb-l0-ej1"/>
+                        <constraint firstItem="vVh-B2-dSc" firstAttribute="leading" secondItem="brN-HN-8gt" secondAttribute="trailing" constant="10" id="1nQ-fy-0BN"/>
                         <constraint firstItem="cNq-U5-Et0" firstAttribute="centerY" secondItem="Ppk-WQ-HLO" secondAttribute="centerY" id="Kw7-4c-Y4g"/>
-                        <constraint firstItem="TEq-1h-8vX" firstAttribute="width" secondItem="TEq-1h-8vX" secondAttribute="height" multiplier="1:1" id="KzI-M8-ts6"/>
                         <constraint firstItem="hSk-36-GSy" firstAttribute="centerY" secondItem="Ppk-WQ-HLO" secondAttribute="centerY" id="Mk9-dT-ct6"/>
                         <constraint firstItem="MIg-zf-XEF" firstAttribute="width" secondItem="cNq-U5-Et0" secondAttribute="width" id="NBv-XD-IJB"/>
+                        <constraint firstItem="dz5-BO-Vx7" firstAttribute="leading" secondItem="QNu-vn-cEq" secondAttribute="trailing" id="O06-Yd-OZm"/>
                         <constraint firstItem="MIg-zf-XEF" firstAttribute="leading" secondItem="1oT-yq-90W" secondAttribute="trailing" constant="6" id="PhT-oG-GyS"/>
-                        <constraint firstItem="dz5-BO-Vx7" firstAttribute="centerY" secondItem="Ppk-WQ-HLO" secondAttribute="centerY" id="S9N-Gs-Lsd"/>
+                        <constraint firstItem="QNu-vn-cEq" firstAttribute="leading" secondItem="Ppk-WQ-HLO" secondAttribute="leading" constant="14" id="Pxq-QF-GrH"/>
+                        <constraint firstItem="QNu-vn-cEq" firstAttribute="width" secondItem="QNu-vn-cEq" secondAttribute="height" multiplier="1:1" id="S2J-rC-lJd"/>
                         <constraint firstItem="TEq-1h-8vX" firstAttribute="centerY" secondItem="Ppk-WQ-HLO" secondAttribute="centerY" id="Szb-Pn-f7G"/>
                         <constraint firstAttribute="width" secondItem="Ppk-WQ-HLO" secondAttribute="height" multiplier="780:44" id="TI5-5P-dI9"/>
-                        <constraint firstItem="dz5-BO-Vx7" firstAttribute="width" secondItem="dz5-BO-Vx7" secondAttribute="height" multiplier="1:1" id="WTb-la-ndz"/>
+                        <constraint firstItem="dz5-BO-Vx7" firstAttribute="centerY" secondItem="QNu-vn-cEq" secondAttribute="centerY" id="Wrr-N1-M6R"/>
                         <constraint firstItem="TEq-1h-8vX" firstAttribute="leading" secondItem="UgO-dh-QV4" secondAttribute="trailing" id="Ygk-4s-kM6"/>
                         <constraint firstItem="cNq-U5-Et0" firstAttribute="height" secondItem="Ppk-WQ-HLO" secondAttribute="height" multiplier="0.7" id="aUO-ei-ZAW"/>
                         <constraint firstItem="UgO-dh-QV4" firstAttribute="centerY" secondItem="Ppk-WQ-HLO" secondAttribute="centerY" id="bV2-Rp-ZW2"/>
+                        <constraint firstItem="QNu-vn-cEq" firstAttribute="centerY" secondItem="Ppk-WQ-HLO" secondAttribute="centerY" id="bZO-e1-pD2"/>
                         <constraint firstItem="cNq-U5-Et0" firstAttribute="leading" secondItem="MIg-zf-XEF" secondAttribute="trailing" id="cl3-bl-PRQ"/>
                         <constraint firstItem="UgO-dh-QV4" firstAttribute="leading" secondItem="dz5-BO-Vx7" secondAttribute="trailing" id="dWJ-er-sms"/>
                         <constraint firstItem="MIg-zf-XEF" firstAttribute="centerY" secondItem="Ppk-WQ-HLO" secondAttribute="centerY" id="gLN-nw-gjB"/>
+                        <constraint firstItem="brN-HN-8gt" firstAttribute="centerY" secondItem="TEq-1h-8vX" secondAttribute="centerY" id="hTw-X7-OqZ"/>
                         <constraint firstItem="vVh-B2-dSc" firstAttribute="centerY" secondItem="Ppk-WQ-HLO" secondAttribute="centerY" id="nZT-eM-612"/>
-                        <constraint firstItem="vVh-B2-dSc" firstAttribute="leading" secondItem="TEq-1h-8vX" secondAttribute="trailing" constant="10" id="oMc-aB-QtA"/>
                         <constraint firstAttribute="trailing" secondItem="cNq-U5-Et0" secondAttribute="trailing" constant="8" id="oZv-YQ-0oF"/>
-                        <constraint firstItem="dz5-BO-Vx7" firstAttribute="leading" secondItem="Ppk-WQ-HLO" secondAttribute="leading" constant="14" id="sbh-Lv-sVb"/>
+                        <constraint firstItem="brN-HN-8gt" firstAttribute="leading" secondItem="TEq-1h-8vX" secondAttribute="trailing" id="pmJ-qq-loX"/>
                         <constraint firstItem="1oT-yq-90W" firstAttribute="centerY" secondItem="Ppk-WQ-HLO" secondAttribute="centerY" id="sdN-5w-zSY"/>
                         <constraint firstItem="1oT-yq-90W" firstAttribute="leading" secondItem="hSk-36-GSy" secondAttribute="trailing" constant="8" id="vCv-Df-ujF"/>
-                        <constraint firstItem="hSk-36-GSy" firstAttribute="leading" secondItem="vVh-B2-dSc" secondAttribute="trailing" constant="8" id="vOq-vj-o0h"/>
+                        <constraint firstItem="hSk-36-GSy" firstAttribute="leading" secondItem="vVh-B2-dSc" secondAttribute="trailing" constant="10" id="vOq-vj-o0h"/>
                     </constraints>
                 </view>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="vYk-Ub-akK">
@@ -148,6 +171,8 @@
         <image name="ic_next" width="20" height="20"/>
         <image name="ic_play" width="384" height="384"/>
         <image name="ic_prev" width="20" height="20"/>
+        <image name="ic_vr_step_backward" width="20" height="20"/>
+        <image name="ic_vr_step_forward" width="20" height="20"/>
         <image name="vr_mode" width="20" height="20"/>
     </resources>
 </document>

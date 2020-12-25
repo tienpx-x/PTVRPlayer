@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PTPortraitControlView" customModule="Runner" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PTPortraitControlView" customModule="PTVRPlayer_Example" customModuleProvider="target">
             <connections>
                 <outlet property="back30sButton" destination="NtK-sa-8ta" id="xKC-rK-4e5"/>
                 <outlet property="closeButton" destination="wTN-uc-1jh" id="YOc-No-tmp"/>
@@ -20,6 +20,8 @@
                 <outlet property="playPauseButton" destination="dLp-KD-fGA" id="uBs-wr-Y4I"/>
                 <outlet property="rightTimeLabel" destination="IMk-9b-udh" id="bKL-Y6-er8"/>
                 <outlet property="seekSlider" destination="9kY-nU-zph" id="shf-2m-GCa"/>
+                <outlet property="stepBackwardButton" destination="q8w-gH-IcB" id="55d-xj-rEn"/>
+                <outlet property="stepForwardButton" destination="m4R-fP-Yt4" id="bdV-kH-dV4"/>
                 <outlet property="vrButton" destination="HM5-Id-tHF" id="7mv-fP-7J6"/>
             </connections>
         </placeholder>
@@ -48,13 +50,13 @@
                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="9kY-nU-zph">
                             <rect key="frame" x="10" y="2.5" width="353" height="31"/>
                         </slider>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IMk-9b-udh" customClass="TimeLabel" customModule="Runner" customModuleProvider="target">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IMk-9b-udh" customClass="TimeLabel" customModule="PTVRPlayer_Example" customModuleProvider="target">
                             <rect key="frame" x="327" y="37.5" width="34" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.7803921568627451" green="0.792156862745098" blue="0.81960784313725488" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nrL-yA-deM" customClass="TimeLabel" customModule="Runner" customModuleProvider="target">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nrL-yA-deM" customClass="TimeLabel" customModule="PTVRPlayer_Example" customModuleProvider="target">
                             <rect key="frame" x="12" y="37.5" width="34" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.78039215689999997" green="0.79215686269999996" blue="0.81960784310000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -87,16 +89,32 @@
                             <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
                             <state key="normal" image="ic_focus"/>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m4R-fP-Yt4">
+                            <rect key="frame" x="242.5" y="50.5" width="30" height="30"/>
+                            <inset key="imageEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                            <state key="normal" image="ic_vr_step_forward"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q8w-gH-IcB">
+                            <rect key="frame" x="100.5" y="50.5" width="30" height="30"/>
+                            <inset key="imageEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                            <state key="normal" image="ic_vr_step_backward"/>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.1803921568627451" green="0.19215686274509802" blue="0.2196078431372549" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
+                        <constraint firstItem="NtK-sa-8ta" firstAttribute="leading" secondItem="q8w-gH-IcB" secondAttribute="trailing" constant="6" id="0Ru-FF-yCu"/>
+                        <constraint firstItem="m4R-fP-Yt4" firstAttribute="leading" secondItem="TCz-Rz-OA3" secondAttribute="trailing" constant="6" id="2y0-3N-T5P"/>
                         <constraint firstItem="KjO-1C-9Us" firstAttribute="centerY" secondItem="HM5-Id-tHF" secondAttribute="centerY" id="3NF-vX-yXe"/>
                         <constraint firstItem="KjO-1C-9Us" firstAttribute="width" secondItem="KjO-1C-9Us" secondAttribute="height" multiplier="1:1" id="5SO-Vr-0p4"/>
                         <constraint firstItem="TCz-Rz-OA3" firstAttribute="width" secondItem="TCz-Rz-OA3" secondAttribute="height" multiplier="1:1" id="60R-Rz-udO"/>
+                        <constraint firstItem="q8w-gH-IcB" firstAttribute="height" secondItem="NtK-sa-8ta" secondAttribute="height" id="6av-si-VJf"/>
                         <constraint firstItem="9kY-nU-zph" firstAttribute="centerY" secondItem="0u2-Ca-QtO" secondAttribute="centerY" multiplier="0.4" id="6fI-Am-JLD"/>
                         <constraint firstItem="dLp-KD-fGA" firstAttribute="centerX" secondItem="0u2-Ca-QtO" secondAttribute="centerX" id="6pF-4V-WrY"/>
+                        <constraint firstItem="m4R-fP-Yt4" firstAttribute="centerY" secondItem="TCz-Rz-OA3" secondAttribute="centerY" id="8pu-ab-asc"/>
                         <constraint firstItem="nrL-yA-deM" firstAttribute="top" secondItem="9kY-nU-zph" secondAttribute="bottom" constant="5" id="AQy-VZ-xx2"/>
+                        <constraint firstItem="q8w-gH-IcB" firstAttribute="width" secondItem="NtK-sa-8ta" secondAttribute="width" id="Cck-Ta-ijU"/>
                         <constraint firstItem="IMk-9b-udh" firstAttribute="trailing" secondItem="9kY-nU-zph" secondAttribute="trailing" id="Dpy-ip-s2u"/>
+                        <constraint firstItem="q8w-gH-IcB" firstAttribute="centerY" secondItem="NtK-sa-8ta" secondAttribute="centerY" id="Kxt-Lb-ovr"/>
                         <constraint firstItem="HM5-Id-tHF" firstAttribute="leading" secondItem="KjO-1C-9Us" secondAttribute="trailing" id="Pw1-2m-c1F"/>
                         <constraint firstAttribute="width" secondItem="0u2-Ca-QtO" secondAttribute="height" multiplier="343:80" id="U35-la-Vm4"/>
                         <constraint firstItem="TCz-Rz-OA3" firstAttribute="centerY" secondItem="dLp-KD-fGA" secondAttribute="centerY" id="U8E-ei-rrh"/>
@@ -104,11 +122,13 @@
                         <constraint firstItem="NtK-sa-8ta" firstAttribute="width" secondItem="NtK-sa-8ta" secondAttribute="height" multiplier="1:1" id="Yf6-0m-RoS"/>
                         <constraint firstItem="TCz-Rz-OA3" firstAttribute="leading" secondItem="dLp-KD-fGA" secondAttribute="trailing" constant="6" id="cu3-jb-81f"/>
                         <constraint firstItem="nrL-yA-deM" firstAttribute="leading" secondItem="9kY-nU-zph" secondAttribute="leading" id="eE3-G5-o9b"/>
+                        <constraint firstItem="m4R-fP-Yt4" firstAttribute="width" secondItem="TCz-Rz-OA3" secondAttribute="width" id="evR-kn-eut"/>
                         <constraint firstItem="dLp-KD-fGA" firstAttribute="centerY" secondItem="0u2-Ca-QtO" secondAttribute="centerY" multiplier="1.5" id="ffF-if-uZZ"/>
                         <constraint firstItem="9kY-nU-zph" firstAttribute="leading" secondItem="0u2-Ca-QtO" secondAttribute="leading" constant="12" id="gD7-ML-4hs"/>
                         <constraint firstItem="KjO-1C-9Us" firstAttribute="width" secondItem="KjO-1C-9Us" secondAttribute="height" multiplier="1:1" id="gjf-C1-IVm"/>
                         <constraint firstItem="HM5-Id-tHF" firstAttribute="trailing" secondItem="IMk-9b-udh" secondAttribute="trailing" constant="10" id="hfy-d6-u3m"/>
                         <constraint firstItem="NtK-sa-8ta" firstAttribute="centerY" secondItem="dLp-KD-fGA" secondAttribute="centerY" id="hri-jJ-2CE"/>
+                        <constraint firstItem="m4R-fP-Yt4" firstAttribute="height" secondItem="TCz-Rz-OA3" secondAttribute="height" id="jPK-no-beF"/>
                         <constraint firstItem="TCz-Rz-OA3" firstAttribute="width" secondItem="TCz-Rz-OA3" secondAttribute="height" multiplier="1:1" id="jpv-Bh-B0n"/>
                         <constraint firstItem="9kY-nU-zph" firstAttribute="centerX" secondItem="0u2-Ca-QtO" secondAttribute="centerX" id="msZ-gM-CRx"/>
                         <constraint firstItem="dLp-KD-fGA" firstAttribute="leading" secondItem="NtK-sa-8ta" secondAttribute="trailing" constant="6" id="pOW-AS-ZQU"/>
@@ -126,6 +146,7 @@
                     <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </activityIndicatorView>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="P62-4y-ayi"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="0u2-Ca-QtO" firstAttribute="width" secondItem="ese-9H-uas" secondAttribute="width" multiplier="0.9" id="4oT-od-Nhp"/>
@@ -136,7 +157,6 @@
                 <constraint firstItem="0u2-Ca-QtO" firstAttribute="centerX" secondItem="ese-9H-uas" secondAttribute="centerX" id="r9q-Ei-w8n"/>
                 <constraint firstItem="2vT-Hc-bBh" firstAttribute="centerY" secondItem="ese-9H-uas" secondAttribute="centerY" id="wjG-3w-dQk"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="P62-4y-ayi"/>
             <point key="canvasLocation" x="-81.159420289855078" y="81.026785714285708"/>
         </view>
     </objects>
@@ -146,6 +166,8 @@
         <image name="ic_next" width="20" height="20"/>
         <image name="ic_play" width="384" height="384"/>
         <image name="ic_prev" width="20" height="20"/>
+        <image name="ic_vr_step_backward" width="20" height="20"/>
+        <image name="ic_vr_step_forward" width="20" height="20"/>
         <image name="vr_mode" width="20" height="20"/>
     </resources>
 </document>

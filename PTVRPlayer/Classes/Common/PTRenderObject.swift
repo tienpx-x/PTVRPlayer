@@ -7,9 +7,19 @@
 
 import SceneKit
 
-public enum PTRenderType {
+public enum PTRenderType: Equatable {
     case button
     case slider(TimeInterval)
+    case progress(TimeInterval)
+    
+    public static func ==(lhs: PTRenderType, rhs: PTRenderType) -> Bool {
+        switch (lhs, rhs) {
+        case (let .progress(_), let .progress(_)):
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 public class PTRenderObject: SCNNode {

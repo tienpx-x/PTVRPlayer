@@ -28,6 +28,7 @@ public final class PT180SBSMediaNode: SCNNode {
         _ = SCNSphere(radius: radius).then {
             $0.segmentCount = segmentCount
             $0.firstMaterial?.cullMode = .front
+            $0.firstMaterial?.diffuse.contents = UIColor.black
             geometry = $0
         }
         scale = SCNVector3(x: 1, y: 1, z: -1)
@@ -43,10 +44,10 @@ public final class PT180SBSMediaNode: SCNNode {
         DispatchQueue.main.async {
             let sphereEffect = SCNTube(innerRadius: self.radius - 0.02,
                                        outerRadius: self.radius - 0.01,
-                                       height: 1).then {
-                $0.firstMaterial?.cullMode = .front
-                $0.firstMaterial?.diffuse.contents = image.cgImage
-            }
+                                       height: 0.75).then {
+                                        $0.firstMaterial?.cullMode = .front
+                                        $0.firstMaterial?.diffuse.contents = image
+                                       }
             let effectNode = SCNNode(geometry: sphereEffect)
             effectNode.eulerAngles.x = deg2rad(90)
             effectNode.eulerAngles.y = deg2rad(-90)

@@ -11,7 +11,7 @@ class PTUISlider: UISlider {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.setMinimumTrackImage(createImage(color: #colorLiteral(red: 0.8935084939, green: 0, blue: 0, alpha: 1), frame: frame), for: .normal)
+//        self.setMinimumTrackImage(createImage(color: #colorLiteral(red: 0.8935084939, green: 0, blue: 0, alpha: 1), frame: frame), for: .normal)
     }
     
     func createImage(color: UIColor, frame: CGRect) -> UIImage {

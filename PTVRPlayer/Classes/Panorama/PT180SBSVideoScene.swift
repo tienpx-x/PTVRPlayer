@@ -150,14 +150,14 @@ extension PT180SBSVideoScene {
 
 // MARK: - AVPlayer Item Render
 extension PT180SBSVideoScene {
-    private func bind(_ player: AVPlayer) {
+    public func bind(_ player: AVPlayer) {
         guard let playerItem = playerItem, !playerItem.outputs.contains(videoOutput) else {
             return
         }
         playerItem.add(videoOutput)
     }
     
-    private func unbind(_ player: AVPlayer) {
+    public func unbind(_ player: AVPlayer) {
         guard let playerItem = playerItem, playerItem.outputs.contains(videoOutput) else {
             return
         }
@@ -207,11 +207,13 @@ extension PT180SBSVideoScene {
                                                   &cacheOutput)
 
         guard let cvMetalTexture = cacheOutput else {
-            fatalError("cvMetalTexture")
+            print("cvMetalTexture")
+            return
         }
         
         guard let sourceTexture = CVMetalTextureGetTexture(cvMetalTexture) else {
-            fatalError("Failed to get MTLTexture from CVMetalTexture")
+            print("Failed to get MTLTexture from CVMetalTexture")
+            return
         }
         
         let lSourceOrigin = MTLOriginMake(0, 0, 0)

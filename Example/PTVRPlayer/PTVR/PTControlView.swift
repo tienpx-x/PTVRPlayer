@@ -14,6 +14,8 @@ protocol PTControlView: UIView {
     var isEnded: Bool { get set }
     var duration: TimeInterval { get set }
     var process: TimeInterval { get set }
+    var canStepFoward: Bool { get set }
+    var canStepBackward: Bool { get set }
     func showControlView()
     func hideControlView()
 }

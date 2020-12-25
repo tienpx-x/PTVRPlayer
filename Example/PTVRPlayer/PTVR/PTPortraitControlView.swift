@@ -20,6 +20,9 @@ class PTPortraitControlView: UIView, NibOwnerLoadable, PTControlView {
     @IBOutlet weak var next30sButton: UIButton!
     @IBOutlet weak var focusButton: UIButton!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
+    @IBOutlet weak var stepForwardButton: UIButton!
+    @IBOutlet weak var stepBackwardButton: UIButton!
+    
     
     // MARK: - Properties
     weak var playerController: PTPlayerControler?
@@ -56,6 +59,18 @@ class PTPortraitControlView: UIView, NibOwnerLoadable, PTControlView {
         didSet {
             handleProcess(process)
             updateControllersState()
+        }
+    }
+    
+    var canStepFoward: Bool = false {
+        didSet {
+            stepForwardButton.isHidden = !canStepFoward
+        }
+    }
+    
+    var canStepBackward: Bool = false {
+        didSet {
+            stepBackwardButton.isHidden = !canStepBackward
         }
     }
     
@@ -171,6 +186,18 @@ class PTPortraitControlView: UIView, NibOwnerLoadable, PTControlView {
                 self.process = TimeInterval(value)
             })
             .drive()
+            .disposed(by: rx.disposeBag)
+        
+        stepForwardButton.rx.tap.asDriver()
+            .drive(onNext: { [unowned self] in
+                self.playerController?.stepForward()
+            })
+            .disposed(by: rx.disposeBag)
+        
+        stepBackwardButton.rx.tap.asDriver()
+            .drive(onNext: { [unowned self] in
+                self.playerController?.stepBackward()
+            })
             .disposed(by: rx.disposeBag)
     }
     

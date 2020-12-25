@@ -119,7 +119,7 @@ extension PTPanoramaView {
         }
     }
 }
-
+ 
 
 // MARK: - Controller
 extension PTPanoramaView {

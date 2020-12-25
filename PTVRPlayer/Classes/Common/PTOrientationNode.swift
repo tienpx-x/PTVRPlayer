@@ -31,12 +31,11 @@ public class PTOrientationNode: SCNNode {
     let interfaceOrientationNode = SCNNode()
     
     public var cursorNode: SCNNode = {
-        let plane = SCNCylinder(radius: 0.01, height: 0.2)
+        let plane = SCNCylinder(radius: 0.0095, height: 0.4)
         plane.firstMaterial?.isDoubleSided = true
         return SCNNode(geometry: plane).then {
             $0.name = "Cursor Node"
-            $0.eulerAngles.x = deg2rad(80)
-            $0.eulerAngles.y = deg2rad(-2)
+            $0.eulerAngles.x = deg2rad(90)
             $0.position = SCNVector3Make(0, 0.1, -0.9)
         }
     }()
@@ -101,6 +100,7 @@ public class PTOrientationNode: SCNNode {
         let m2 = SCNMaterial()
         m2.diffuse.contents = view
         cursorNode.geometry?.materials = [m1 , m2]
+//        cursorNode.geometry?.firstMaterial?.diffuse.contents = UIColor.red
     }
     
     public required init?(coder aDecoder: NSCoder) {

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ic_vr_step_backward.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

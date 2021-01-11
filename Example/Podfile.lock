@@ -1,6 +1,7 @@
 PODS:
   - FittedSheets (1.4.6)
   - FontAwesome.swift (1.9.1)
+  - MultiProgressView (1.3.0)
   - "NSObject+Rx (5.1.0)":
     - RxSwift (~> 5.1)
   - ObjectMapper (4.2.0)
@@ -31,6 +32,7 @@ PODS:
 DEPENDENCIES:
   - FittedSheets
   - FontAwesome.swift
+  - MultiProgressView
   - "NSObject+Rx"
   - ObjectMapper
   - PTVRPlayer (from `../`)
@@ -46,6 +48,7 @@ SPEC REPOS:
   trunk:
     - FittedSheets
     - FontAwesome.swift
+    - MultiProgressView
     - "NSObject+Rx"
     - ObjectMapper
     - QRCodeReader.swift
@@ -66,6 +69,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FittedSheets: 7f37fee2567d15dcde391f31eccbffb660ddebf0
   FontAwesome.swift: 6b52cb7be66eacd28cbfaa0ca7ffd0de4a186a1d
+  MultiProgressView: 65e5bb8181687099ade56d16d85d245a92fafa96
   "NSObject+Rx": fa6bbcc1ab1faa06b01466bc09b1e0692bbc5946
   ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
   PTVRPlayer: 74448fa6ce28de6e4fc2904251166811c1ead968
@@ -80,6 +84,6 @@ SPEC CHECKSUMS:
   SwiftProtobuf: ed465ed18402f998fd117f631da27e0168e6b59c
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: 3aec75f84f625986fd6ca39766aa02da7cd9425c
+PODFILE CHECKSUM: 013f67164ae42fdfff9f3b7a0e0a6a64f7588ed2
 
 COCOAPODS: 1.9.3

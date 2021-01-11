@@ -13,6 +13,7 @@ target 'PTVRPlayer_Example' do
   pod 'FittedSheets'
   pod 'FontAwesome.swift'
   pod 'ObjectMapper'
+  pod 'MultiProgressView'
   
   target 'PTVRPlayer_Tests' do
     inherit! :search_paths

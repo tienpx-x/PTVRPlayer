@@ -30,6 +30,8 @@ final class PTPlayerViewController: UIViewController {
     // MARK: - Properties
     
     var player: PTPlayer?
+    var playerStartTime: TimeInterval?
+    var retryTimer: Timer?
     var videos: ListVideo?
     var currentIndex = 0
     var currentVideo: Video? {
@@ -135,8 +137,8 @@ final class PTPlayerViewController: UIViewController {
     deinit {
         print(String(describing: type(of: self)) + " deinit")
         NotificationCenter.default.removeObserver(self)
-        if timeObserver != nil {
-            player?.removeTimeObserver(timeObserver!)
+        if let timeObserver = timeObserver {
+            player?.removeTimeObserver(timeObserver)
         }
     }
     
@@ -209,10 +211,13 @@ final class PTPlayerViewController: UIViewController {
         
         panoramaView.load(player: player, format: .stereoSBS)
         
-//        panoramaView.scene?.leftMediaNode.addEffect(image: #imageLiteral(resourceName: "effect"))
-//        panoramaView.scene?.rightMediaNode.addEffect(image: #imageLiteral(resourceName: "effect"))
+        //        panoramaView.scene?.leftMediaNode.addEffect(image: #imageLiteral(resourceName: "effect"))
+        //        panoramaView.scene?.rightMediaNode.addEffect(image: #imageLiteral(resourceName: "effect"))
         
         tracking(player: player)
+        player.currentItem?.preferredForwardBufferDuration = TimeInterval(120)
+        player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = true
+        player.automaticallyWaitsToMinimizeStalling = true
         
         // set initial process & duration value for control view
         playerViews.forEach {
@@ -229,19 +234,23 @@ final class PTPlayerViewController: UIViewController {
         timeObserver = player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 100, timescale: 1000),
                                                       queue: DispatchQueue.main) { [weak self] (time) in
             guard let self = self else { return }
-            let duration = self.player?.duration ?? 0
+            let duration = self.player?.duration ?? 1
+            let availableDuration = self.player?.availableDuration ?? 1
+            print("Current: \(time.seconds) - Loaded: \(String(describing: self.player?.availableDuration)) - Duration: \(String(describing: self.player?.duration))")
             self.playerViews.forEach {
                 $0.duration = duration
                 $0.process = time.seconds
-                if time.seconds > 0 {
-                    $0.isLoading = false
-                }
+                //                if time.seconds > 0 {
+                //                    $0.isLoading = false
+                //                }
             }
             guard let vrControl = self.vrControl else { return }
             DispatchQueue.main.async {
-                vrControl.progressSlider.maximumValue = Float(self.player?.duration ?? 0)
-                vrControl.progressNode.type = .slider(self.player?.duration ?? 0)
-                vrControl.progressSlider.value = Float(time.seconds)
+                vrControl.progressNode.type = .slider(duration)
+                let progress = Float(time.seconds / duration)
+                let loadedProgress = Float(availableDuration / duration) - progress
+                vrControl.progressView.setProgress(section: 0, to: progress)
+                vrControl.progressView.setProgress(section: 1, to: loadedProgress)
                 vrControl.leftTimeLabel.second = time.seconds
                 vrControl.rightTimeLabel.second = duration
             }
@@ -323,16 +332,25 @@ extension PTPlayerViewController {
             playerViews.forEach {
                 $0.isLoading = true
             }
+            if let stereoView = stereoView {
+                stereoView.isLoading = true
+            }
         }
         playerItem.rx.observe(AVPlayerItem.Status.self, #keyPath(AVPlayerItem.status))
             .compactMap { $0 }
             .subscribe(onNext: { [unowned self] (value) in
                 switch value {
                 case .readyToPlay:
+                    print("[LOG] readyToPlay")
                     let duration = self.player?.duration ?? 0
                     self.playerViews.forEach {
                         // $0.isLoading = false
                         $0.duration = duration
+                    }
+                    if let playerStartTime = playerStartTime {
+                        print("[LOG] Set init start time \(playerStartTime)")
+                        self.seek(to: playerStartTime, completion: nil)
+                        self.playerStartTime = nil
                     }
                     break
                 case .failed:
@@ -350,8 +368,22 @@ extension PTPlayerViewController {
         playerItem.rx.observe(Bool.self, #keyPath(AVPlayerItem.isPlaybackBufferEmpty))
             .compactMap { $0 }
             .subscribe(onNext: { [unowned self] (value) in
-                //                self.playerViews.forEach {
-                //                    $0.isLoading = value
+                self.playerViews.forEach {
+                    $0.isLoading = value
+                }
+                if let stereoView = stereoView {
+                    stereoView.isLoading = value
+                }
+                print("[LOG] isPlaybackBufferEmpty - \(value)")
+                //                print("[LOG] Start retry")
+                //                if value {
+                //                    retryTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { timer in
+                //                        print("[LOG] Hit retry")
+                //                        if let currentTime = player?.currentTime().seconds {
+                //                            self.seek(to: currentTime, completion: nil)
+                //                            timer.invalidate()
+                //                        }
+                //                    }
                 //                }
             })
             .disposed(by: playerItemBag)
@@ -361,22 +393,63 @@ extension PTPlayerViewController {
             .subscribe(onNext: { [unowned self] (value) in
                 if value == true {
                     self.playerViews.forEach {
-                        $0.isLoading = false
+                        if $0.isLoading == true {
+                            $0.isLoading = false
+                        }
+                    }
+                    if let stereoView = stereoView {
+                        if stereoView.isLoading == true {
+                            stereoView.isLoading = false
+                        }
                     }
                 }
+                print("[LOG] isPlaybackBufferFull - \(value)")
             })
             .disposed(by: playerItemBag)
         
         playerItem.rx.observe(Bool.self, #keyPath(AVPlayerItem.isPlaybackLikelyToKeepUp))
             .compactMap { $0 }
             .subscribe(onNext: { [unowned self] (value) in
-                //                if value == true {
-                //                    self.playerViews.forEach {
-                //                        $0.isLoading = false
-                //                    }
-                //                }
+                if value == true {
+                    self.playerViews.forEach {
+                        if $0.isLoading == true {
+                            $0.isLoading = false
+                        }
+                    }
+                    if let stereoView = stereoView {
+                        if stereoView.isLoading == true {
+                            stereoView.isLoading = false
+                        }
+                    }
+                    retryTimer?.invalidate()
+                }
+                print("[LOG] isPlaybackLikelyToKeepUp - \(value)")
             })
             .disposed(by: playerItemBag)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(itemDidStall(_:)),
+                                               name: NSNotification.Name.AVPlayerItemPlaybackStalled,
+                                               object: playerItem)
+    }
+    
+    @objc func itemDidStall(_ notification: Notification) {
+        print(notification)
+        print("[LOG] AVPlayer got stalled stream url")
+        if let player = player, let playerItem = player.currentItem {
+            if(!playerItem.isPlaybackLikelyToKeepUp) {
+                let currentTime = player.currentTime().seconds
+                //                self.playerStartTime = currentTime + 5
+                //                print("[LOG] AVPlayer got stalled and replace \(currentTime)")
+                //                retryTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] timer in
+                //                    print("[LOG] Hit retry")
+                //                    if let url = player.getVideoUrl() {
+                //                        self?.playNewUrl(url: url)
+                //                    }
+                //                    timer.invalidate()
+                //                }
+            }
+        }
     }
 }
 
@@ -476,26 +549,28 @@ extension PTPlayerViewController: PTPlayerControler {
         }
     }
     
-    func stepForward() {
-        guard let player = player, let videos = videos?.items, let currentVideo = currentVideo else { return }
-        guard let next = videos.next(item: currentVideo), let url = URL(string: next.url) else { return }
+    func playNewUrl(url: URL) {
+        guard let player = player else { return }
+        print("[LOG] Play new url \(url)")
         player.pause()
         if let player = self.player {
             self.panoramaView.scene?.unbind(player)
         }
         player.replaceCurrentItem(with: AVPlayerItem(url: url))
+    }
+    
+    func stepForward() {
+        guard let _ = player, let videos = videos?.items, let currentVideo = currentVideo else { return }
+        guard let next = videos.next(item: currentVideo), let url = URL(string: next.url) else { return }
+        playNewUrl(url: url)
         currentIndex += 1
         configStepButton()
     }
     
     func stepBackward() {
-        guard let player = player, let videos = videos?.items, let currentVideo = currentVideo else { return }
+        guard let _ = player, let videos = videos?.items, let currentVideo = currentVideo else { return }
         guard let prev = videos.prev(item: currentVideo), let url = URL(string: prev.url) else { return }
-        player.pause()
-        if let player = self.player {
-            self.panoramaView.scene?.unbind(player)
-        }
-        player.replaceCurrentItem(with: AVPlayerItem(url: url))
+        playNewUrl(url: url)
         currentIndex -= 1
         configStepButton()
     }

@@ -31,6 +31,33 @@ class PTPlayer: AVPlayer {
         return currentItem.duration.seconds
     }
     
+    func getVideoUrl() -> URL? {
+        let asset = currentItem?.asset
+        if asset == nil {
+            return nil
+        }
+        if let urlAsset = asset as? AVURLAsset {
+            return urlAsset.url
+        }
+        return nil
+    }
+    
+    var availableDuration: TimeInterval {
+        guard let currentItem = currentItem else { return 0 }
+        let currentTime = self.currentTime()
+        //        if let timeRange = currentItem.loadedTimeRanges.map({ $0.timeRangeValue }).first(where: { $0.containsTime(currentTime) }) {
+        //            return CMTimeGetSeconds(timeRange.end) - currentTime.seconds
+        //        }
+        if let range = currentItem.loadedTimeRanges.first {
+            let timeRange = range.timeRangeValue
+            let startSeconds = CMTimeGetSeconds(timeRange.start)
+            let durationSecond = CMTimeGetSeconds(timeRange.duration)
+            let result = startSeconds + durationSecond
+            return result
+        }
+        return .zero
+    }
+    
     @objc dynamic var isPlaying: Bool = false
     
     func seek(to time: TimeInterval, completion: @escaping (Bool) -> Void) {

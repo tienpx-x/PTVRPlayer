@@ -32,6 +32,16 @@ public final class PTStereoView: UIView {
         return UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
     }()
     
+    public lazy var loadingView: UIView = {
+        return UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+    }()
+    
+    public var isLoading: Bool = false {
+        didSet {
+            isLoading ? showLoading() : hideLoading()
+        }
+    }
+    
     // Controller Properties
     private var currentFocus: PTRenderObject?
     private var currentFocused: PTRenderObject?
@@ -186,11 +196,12 @@ extension PTStereoView {
     public func resetController() {
         renderControllerObject()
         touchView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        loadingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
         initCursor()
     }
 }
 
-// MARK: Touching
+// MARK: Touching + Loading
 extension PTStereoView {
     func initCursor() {
         addGestureRecognizer(tapGestureRecognizer)
@@ -208,10 +219,44 @@ extension PTStereoView {
         touchView.isHidden = true
     }
     
+    public func showLoading() {
+        [leftOrientationNode, rightOrientationNode].forEach {
+            $0.loadingNode.isHidden = false
+            hideTouch()
+        }
+    }
+    
+    public func hideLoading() {
+        [leftOrientationNode, rightOrientationNode].forEach {
+            $0.loadingNode.isHidden = true
+            showTouch()
+        }
+    }
+    
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         
     }
 }
+
+// MARK: - 3D Node
+extension PTStereoView {
+    public func hideController() {
+        hideTouch()
+        isControllerVisible = false
+        [leftOrientationNode, rightOrientationNode].forEach {
+            $0?.cursorNode.isHidden = true
+        }
+    }
+    
+    public func showController() {
+        showTouch()
+        isControllerVisible = true
+        [leftOrientationNode, rightOrientationNode].forEach {
+            $0?.cursorNode.isHidden = false
+        }
+    }
+}
+
 
 extension PTStereoView: SCNSceneRendererDelegate {
     public func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
@@ -240,6 +285,7 @@ extension PTStereoView: SCNSceneRendererDelegate {
                 self.setNonFocusCursor()
                 return
             }
+            guard !hitResults[0].nodeB.isHidden else { return }
             self.handleContact(result: hitResults[0])
         }
     }
@@ -248,7 +294,6 @@ extension PTStereoView: SCNSceneRendererDelegate {
         guard let scene = scene else { return }
         guard let node = result.nodeB as? PTRenderObject else { return }
         if node.canFocused && self.currentFocused != node {
-            print("[XXX] \(scene.rootNode.convertPosition(result.contactPoint, to: node))")
             // Change cursor
             self.setFocusCursor()
             node.focusAction?()
@@ -284,6 +329,7 @@ extension PTStereoView: SCNSceneRendererDelegate {
                 }
                 self.currentFocusTime += 1
             } else {
+                self.currentFocus?.unFocusAction?()
                 self.currentFocus = node
                 self.currentFocusTime = 0
             }
@@ -340,25 +386,6 @@ extension PTStereoView: SCNSceneRendererDelegate {
     }
 }
 
-// MARK: - 3D Node
-extension PTStereoView {
-    public func hideController() {
-        hideTouch()
-        isControllerVisible = false
-        [leftOrientationNode, rightOrientationNode].forEach {
-            $0?.cursorNode.isHidden = true
-        }
-    }
-    
-    public func showController() {
-        showTouch()
-        isControllerVisible = true
-        [leftOrientationNode, rightOrientationNode].forEach {
-            $0?.cursorNode.isHidden = false
-        }
-    }
-}
-
 extension PTStereoView: PTOrientationDelegate {
     public func didInRangeHorizontal(orientationNode: PTOrientationNode) {
         
@@ -379,11 +406,15 @@ extension PTStereoView: PTOrientationDelegate {
                 unFocusControllerTime = 0
                 hideController()
             }
-        }
-        
-        if !isControllerVisible {
-            renderController.forEach { $0.opacity = 0 }
-            renderControllerForRightEye.forEach { $0.opacity = 0 }
+        } else {
+            renderController.forEach {
+                $0.opacity = 0
+                $0.isHidden = true
+            }
+            renderControllerForRightEye.forEach {
+                $0.opacity = 0
+                $0.isHidden = true
+            }
         }
     }
     
@@ -394,13 +425,25 @@ extension PTStereoView: PTOrientationDelegate {
     public func didMaxBottomVertical(orientationNode: PTOrientationNode) {
         // Controller
         if focusBottomTime >= totalFocusBottomTime {
-            renderController.forEach { $0.opacity = 1 }
-            renderControllerForRightEye.forEach { $0.opacity = 1 }
+            renderController.forEach {
+                $0.opacity = 1
+                $0.isHidden = false
+            }
+            renderControllerForRightEye.forEach {
+                $0.opacity = 1
+                $0.isHidden = false
+            }
             showController()
         } else {
             if !isControllerVisible {
-                renderController.forEach { $0.opacity = CGFloat(focusBottomTime / totalFocusBottomTime) }
-                renderControllerForRightEye.forEach { $0.opacity = CGFloat(focusBottomTime / totalFocusBottomTime) }
+                renderController.forEach {
+                    $0.opacity = CGFloat(focusBottomTime / totalFocusBottomTime)
+                    $0.isHidden = false
+                }
+                renderControllerForRightEye.forEach {
+                    $0.opacity = CGFloat(focusBottomTime / totalFocusBottomTime)
+                    $0.isHidden = false
+                }
             }
         }
         focusBottomTime += 1

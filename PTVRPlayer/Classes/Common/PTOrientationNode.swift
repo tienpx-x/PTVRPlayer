@@ -40,6 +40,21 @@ public class PTOrientationNode: SCNNode {
         }
     }()
     
+    public var loadingNode: SCNNode = {
+        let view = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 80, height: 80)).then {
+            $0.isOpaque = false
+            $0.style = .whiteLarge
+            $0.startAnimating()
+        }
+        let plane = SCNPlane(width: 0.1, height: 0.1)
+        plane.firstMaterial?.isDoubleSided = true
+        plane.firstMaterial?.diffuse.contents = view
+        return SCNNode(geometry: plane).then {
+            $0.name = "Loading Node"
+            $0.position = SCNVector3Make(0, 0.1, -0.9)
+        }
+    }()
+    
     public let pointOfView = SCNNode()
     
     public var fieldOfView: CGFloat = 90 {
@@ -84,8 +99,10 @@ public class PTOrientationNode: SCNNode {
         interfaceOrientationNode.addChildNode(pointOfView)
         
         pointOfView.addChildNode(cursorNode)
+        pointOfView.addChildNode(loadingNode)
         cursorNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
         cursorNode.isHidden = true
+        loadingNode.isHidden = true
         
         let camera = SCNCamera()
         camera.zNear = 0.3
@@ -182,7 +199,6 @@ public class PTOrientationNode: SCNNode {
                     delegate?.didInRangeVertical(orientationNode: self)
                 }
             }
-            print("[LOG-PARAM] \(y) - L: \(lHoz) R: \(rHoz)")
             self.previousYaw = y
             self.deviceOrientationNode.orientation = rotation.scnQuaternion
         }

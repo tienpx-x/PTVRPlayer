@@ -8,6 +8,7 @@
 
 import SceneKit
 import PTVRPlayer
+import MultiProgressView
 
 class PTVRStereoControl {
     
@@ -18,10 +19,10 @@ class PTVRStereoControl {
     let distance: Float = -0.1
     let sWidth: CGFloat = 0.48
     let sHeight: CGFloat = 0.08
-    let rotateX: Float = Util.deg2rad(45)
+    let rotateX: Float = Util.deg2rad(40)
     let rotateY: Float = Util.deg2rad(-90)
     let rotateZ: Float = Util.deg2rad(0)
-
+    
     var controller: PTPlayerViewController?
     
     var canStepFoward: Bool = false {
@@ -49,16 +50,14 @@ class PTVRStereoControl {
         }
     }()
     
-    lazy var progressSlider: PTUISlider = {
-        return PTUISlider(frame: CGRect(x: 0, y: 0, width: tWidth, height: tHeight / 2)).then {
+    lazy var progressView: MultiProgressView = {
+        return MultiProgressView(frame: CGRect(x: 0, y: 0, width: tWidth, height: tHeight)).then {
             $0.isOpaque = false
-            $0.setThumbImage(UIImage(), for: .normal)
             $0.tintColor = UIColor.clear
-            $0.maximumTrackTintColor = #colorLiteral(red: 0.7803921569, green: 0.7921568627, blue: 0.8196078431, alpha: 1)
-            $0.minimumTrackTintColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
-            $0.value = 40
-            $0.minimumValue = 0
-            $0.maximumValue = 100
+            //            $0.trackTintColor = #colorLiteral(red: 0.7803921569, green: 0.7921568627, blue: 0.8196078431, alpha: 1)
+            //            $0.progressTintColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
+            $0.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+            $0.dataSource = self
         }
     }()
     
@@ -88,8 +87,8 @@ class PTVRStereoControl {
         }
     }()
     
-    let buttonColor: UIColor = #colorLiteral(red: 0.1803921569, green: 0.1921568627, blue: 0.2196078431, alpha: 0.8)
-    let selectedColor: UIColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+    let buttonColor: UIColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.8)
+    let selectedColor: UIColor = #colorLiteral(red: 0.5972556328, green: 0.5972556328, blue: 0.5972556328, alpha: 1)
     
     lazy var playButton: UIButton = {
         return UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40)).then {
@@ -151,27 +150,37 @@ class PTVRStereoControl {
             $0.setImage(UIImage(named: "ic_vr_step_backward")?.resize(width: 20), for: .normal)
         }
     }()
-     
+    
     // Nodes
     
     lazy var opacityNode: PTRenderObject = {
         let node = PTRenderObject(geometry: SCNSphere(radius: 9.6).then {
             $0.firstMaterial?.diffuse.contents = UIColor.black.withAlphaComponent(0.8)
             $0.segmentCount = 96
-            $0.firstMaterial?.isDoubleSided = true
+            $0.firstMaterial?.cullMode = .front
         })
         node.name = "Base Object"
         return node
     }()
     
-    lazy var playerNode: PTRenderObject = {
-        let node = PTRenderObject(geometry: SCNPlane(width: sWidth, height: 1).with {
+    lazy var backgroundNode: PTRenderObject = {
+        let node = PTRenderObject(geometry: SCNPlane(width: 1, height: 1).with {
             $0.firstMaterial?.diffuse.contents = UIColor.black.withAlphaComponent(0.8)
+            $0.firstMaterial?.cullMode = .front
+        })
+        node.position = SCNVector3Make(0, 0, 0.1)
+        return node
+    }()
+    
+    lazy var playerNode: PTRenderObject = {
+        let node = PTRenderObject(geometry: SCNPlane(width: 1, height: 1).with {
+            $0.firstMaterial?.diffuse.contents = UIColor.clear
             $0.firstMaterial?.cullMode = .front
         })
         node.eulerAngles.x = rotateX
         node.eulerAngles.y = rotateY
         node.eulerAngles.z = rotateZ
+        node.addChildNode(backgroundNode)
         node.addChildNode(titleNode)
         node.addChildNode(playButtonNode)
         node.addChildNode(progressNode)
@@ -347,8 +356,8 @@ class PTVRStereoControl {
     }()
     
     lazy var progressNode: PTRenderObject = {
-        return PTRenderObject(geometry: SCNPlane(width: sWidth, height: 0.02).then {
-            $0.firstMaterial?.diffuse.contents = progressSlider.layer
+        return PTRenderObject(geometry: SCNPlane(width: sWidth, height: 0.006).then {
+            $0.firstMaterial?.diffuse.contents = progressView.layer
             $0.firstMaterial?.cullMode = .front
         }).then {
             $0.name = "Progress Node"
@@ -375,4 +384,23 @@ class PTVRStereoControl {
             $0.position = SCNVector3Make(0, -0.258 , distance)
         }
     }()
+}
+
+extension PTVRStereoControl: MultiProgressViewDataSource {
+    func numberOfSections(in progressView: MultiProgressView) -> Int {
+        return 2
+    }
+    
+    func progressView(_ progressView: MultiProgressView, viewForSection section: Int) -> ProgressViewSection {
+        return ProgressViewSection().then {
+            switch section {
+            case 0:
+                $0.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
+            case 1:
+                $0.backgroundColor = #colorLiteral(red: 0.7803921569, green: 0.7921568627, blue: 0.8196078431, alpha: 1)
+            default:
+                break;
+            }
+        }
+    }
 }

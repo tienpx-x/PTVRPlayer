@@ -7,29 +7,30 @@
 //
 
 class PTUISlider: UISlider {
-    var trackHeight: CGFloat = 10
+    let progressView =  UIProgressView(progressViewStyle: .default)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        self.setMinimumTrackImage(createImage(color: #colorLiteral(red: 0.8935084939, green: 0, blue: 0, alpha: 1), frame: frame), for: .normal)
-    }
-    
-    func createImage(color: UIColor, frame: CGRect) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(frame.size, false, 0)
-        color.setFill()
-        UIRectFill(frame)
-        let image = UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
-        UIGraphicsEndImageContext()
-        return image
-    }
-    
-    override func trackRect(forBounds bounds: CGRect) -> CGRect {
-        var newRect = super.trackRect(forBounds: bounds)
-        newRect.size.height = trackHeight
-        return newRect
+        setup()
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        setup()
+    }
+    
+    func setup() {
+        progressView.do {
+            $0.isUserInteractionEnabled = false
+            $0.progressTintColor = #colorLiteral(red: 0.8821555577, green: 0.8952404663, blue: 0.9344951923, alpha: 1)
+            $0.trackTintColor = #colorLiteral(red: 0.7803921569, green: 0.7921568627, blue: 0.8196078431, alpha: 0.7)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        let left = NSLayoutConstraint(item: progressView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1, constant: 0)
+        let centerY = NSLayoutConstraint(item: progressView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0.75)
+        let right = NSLayoutConstraint(item: progressView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0)
+        addConstraints([left, right, centerY])
+        addSubview(progressView)
+        sendSubviewToBack(progressView)
     }
 }

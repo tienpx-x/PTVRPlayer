@@ -13,6 +13,7 @@ protocol PTControlView: UIView {
     var isSeeking: Bool { get set }
     var isEnded: Bool { get set }
     var duration: TimeInterval { get set }
+    var availableDuration: TimeInterval { get set }
     var process: TimeInterval { get set }
     var canStepFoward: Bool { get set }
     var canStepBackward: Bool { get set }

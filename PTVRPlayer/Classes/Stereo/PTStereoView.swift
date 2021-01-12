@@ -293,7 +293,7 @@ extension PTStereoView: SCNSceneRendererDelegate {
     func handleContact(result: SCNPhysicsContact) {
         guard let scene = scene else { return }
         guard let node = result.nodeB as? PTRenderObject else { return }
-        if node.canFocused && self.currentFocused != node {
+        if node.canFocused && self.currentFocused != node && !node.isHidden {
             // Change cursor
             self.setFocusCursor()
             node.focusAction?()
@@ -447,5 +447,64 @@ extension PTStereoView: PTOrientationDelegate {
             }
         }
         focusBottomTime += 1
+    }
+}
+
+extension PTStereoView: SCNPhysicsContactDelegate {
+    public func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+        guard let scene = scene else { return }
+        guard let node = contact.nodeA as? PTRenderObject else { return }
+        print("[LOG] START: \(contact.nodeA)")
+        if node.canFocused && self.currentFocused != node && !node.isHidden {
+            // Change cursor
+            self.setFocusCursor()
+            node.focusAction?()
+            // Action
+            if self.currentFocus == node {
+                if self.currentFocusTime == self.totalFocusTime {
+                    switch node.type {
+                    case .button:
+                        node.action?(nil)
+                        self.currentFocused = node
+                        self.currentFocus = nil
+                        self.currentFocusTime = 0
+                    case .slider(let duration):
+                        let position = scene.rootNode.convertPosition(contact.contactPoint, to: node).x
+                        var percent: Float = 0
+                        let start: Float = -0.24
+                        let end: Float = 0.24
+                        if(position == 0) {
+                            percent = 50
+                        } else if(position > 0 ) {
+                            percent = (position / end) * 50 + 50
+                        } else  if(position < 0 ) {
+                            percent = 50 - (position / start) * 50
+                        }
+                        let seekTime: TimeInterval = (duration / 100) * Double(percent)
+                        node.action?(seekTime)
+                        self.currentFocused = node
+                        self.currentFocus = nil
+                        self.currentFocusTime = 0
+                    default:
+                        break
+                    }
+                }
+                self.currentFocusTime += 1
+            } else {
+                self.currentFocus?.unFocusAction?()
+                self.currentFocus = node
+                self.currentFocusTime = 0
+            }
+        } else {
+            self.setNonFocusCursor()
+        }
+    }
+    
+    public  func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: SCNPhysicsContact) {
+        guard let node = contact.nodeA as? PTRenderObject else { return }
+        print("[LOG] END: \(contact.nodeA)")
+        if node.canFocused && self.currentFocused != node && !node.isHidden {
+            node.unFocusAction?()
+        }
     }
 }

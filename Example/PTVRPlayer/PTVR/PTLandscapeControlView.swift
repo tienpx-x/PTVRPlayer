@@ -14,7 +14,7 @@ class PTLandscapeControlView: UIView, NibOwnerLoadable, PTControlView {
     @IBOutlet weak var vrButton: UIButton!
     @IBOutlet weak var leftTimeLabel: TimeLabel!
     @IBOutlet weak var rightTimeLabel: TimeLabel!
-    @IBOutlet weak var seekSlider: UISlider!
+    @IBOutlet weak var seekSlider: PTUISlider!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var back30sButton: UIButton!
     @IBOutlet weak var next30sButton: UIButton!
@@ -53,6 +53,12 @@ class PTLandscapeControlView: UIView, NibOwnerLoadable, PTControlView {
         didSet {
             rightTimeLabel.second = duration
             seekSlider.maximumValue = Float(duration)
+        }
+    }
+    
+    var availableDuration: TimeInterval = 0 {
+        didSet {
+            seekSlider.progressView.progress = Float(availableDuration / duration)
         }
     }
     
@@ -112,8 +118,8 @@ class PTLandscapeControlView: UIView, NibOwnerLoadable, PTControlView {
         seekSlider.do {
             $0.setThumbImage(#imageLiteral(resourceName: "ic_slider_oval"), for: .normal)
             $0.tintColor = UIColor.clear
-            $0.minimumTrackTintColor = UIColor.white
-            $0.maximumTrackTintColor = #colorLiteral(red: 0.7803921569, green: 0.7921568627, blue: 0.8196078431, alpha: 1)
+            $0.minimumTrackTintColor = .red
+            $0.maximumTrackTintColor = .clear
             $0.value = 0.0
             $0.addTarget(self, action: #selector(handleSliderEvent(_:forEvent:)), for: .valueChanged)
         }

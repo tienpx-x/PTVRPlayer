@@ -27,9 +27,10 @@ class PTVRStereoControl {
     
     var canStepFoward: Bool = false {
         didSet {
-            stepForwardButton.isHidden = !canStepFoward
+            stepForwardNode.isHidden = !canStepFoward
         }
     }
+    
     var canStepBackward: Bool = false {
         didSet {
             stepBackwardNode.isHidden = !canStepBackward
@@ -230,7 +231,7 @@ class PTVRStereoControl {
                 self.playButton.backgroundColor = self.buttonColor
             }
             $0.position = SCNVector3Make(0, -0.1 , distance)
-            $0.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
+            initBody(node: $0)
         }
         return object
     }()
@@ -260,7 +261,7 @@ class PTVRStereoControl {
                 self.next30Button.backgroundColor = self.buttonColor
             }
             $0.position = SCNVector3Make(0.1, -0.1 , distance)
-            $0.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
+            initBody(node: $0)
         }
         return object
     }()
@@ -290,7 +291,7 @@ class PTVRStereoControl {
                 self.prev30Button.backgroundColor = self.buttonColor
             }
             $0.position = SCNVector3Make(-0.1, -0.1 , distance)
-            $0.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
+            initBody(node: $0)
         }
         return object
     }()
@@ -320,7 +321,7 @@ class PTVRStereoControl {
                 self.stepForwardButton.backgroundColor = self.buttonColor
             }
             $0.position = SCNVector3Make(0.175, -0.1 , distance)
-            $0.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
+            initBody(node: $0)
         }
         return object
     }()
@@ -350,7 +351,7 @@ class PTVRStereoControl {
                 self.stepBackwardButton.backgroundColor = self.buttonColor
             }
             $0.position = SCNVector3Make(-0.175, -0.1 , distance)
-            $0.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
+            initBody(node: $0)
         }
         return object
     }()
@@ -369,7 +370,7 @@ class PTVRStereoControl {
                 self.controller?.seek(to: time, completion: nil)
             }
             $0.position = SCNVector3Make(0, -0.2 , distance)
-            $0.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
+            initBody(node: $0)
         }
     }()
     
@@ -384,6 +385,14 @@ class PTVRStereoControl {
             $0.position = SCNVector3Make(0, -0.258 , distance)
         }
     }()
+    
+    func initBody(node: SCNNode) {
+        let physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
+        physicsBody.contactTestBitMask = CollisionBitmask.cursor.rawValue
+        physicsBody.collisionBitMask = CollisionBitmask.cursor.rawValue
+//        physicsBody.categoryBitMask = Int.random(in: 1..<1000)
+        node.physicsBody = physicsBody
+    }
 }
 
 extension PTVRStereoControl: MultiProgressViewDataSource {

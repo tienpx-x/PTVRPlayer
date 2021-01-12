@@ -55,6 +55,12 @@ class PTVRControlView: UIView, NibOwnerLoadable, PTControlView, QRCodeReaderView
         }
     }
     
+    var availableDuration: TimeInterval = 0 {
+        didSet {
+            
+        }
+    }
+    
     var process: TimeInterval = 0 {
         didSet {
             

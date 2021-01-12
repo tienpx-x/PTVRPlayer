@@ -239,6 +239,7 @@ final class PTPlayerViewController: UIViewController {
             print("Current: \(time.seconds) - Loaded: \(String(describing: self.player?.availableDuration)) - Duration: \(String(describing: self.player?.duration))")
             self.playerViews.forEach {
                 $0.duration = duration
+                $0.availableDuration = availableDuration
                 $0.process = time.seconds
                 //                if time.seconds > 0 {
                 //                    $0.isLoading = false

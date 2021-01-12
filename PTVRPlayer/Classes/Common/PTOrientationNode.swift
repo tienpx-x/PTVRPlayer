@@ -8,6 +8,10 @@
 import SceneKit
 import CoreMotion
 
+public enum CollisionBitmask: Int {
+    case cursor = 1
+}
+
 public protocol PTOrientationDelegate: class {
     func didInRangeHorizontal(orientationNode: PTOrientationNode)
     func didMaxLeftHorizontal(orientationNode: PTOrientationNode)
@@ -100,7 +104,9 @@ public class PTOrientationNode: SCNNode {
         
         pointOfView.addChildNode(cursorNode)
         pointOfView.addChildNode(loadingNode)
-        cursorNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
+        cursorNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil).then {
+            $0.categoryBitMask = CollisionBitmask.cursor.rawValue
+        }
         cursorNode.isHidden = true
         loadingNode.isHidden = true
         
